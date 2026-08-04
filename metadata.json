@@ -1,0 +1,10 @@
+{
+  "name": "@sappy.error — Digital Wardrobe",
+  "description": "Digital wardrobe & outfit creator with Y2K streetwear tech aesthetic for @sappy.error.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
