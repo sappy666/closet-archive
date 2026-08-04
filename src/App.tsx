@@ -90,6 +90,15 @@ export default function App() {
     setActiveTab('closet');
   };
 
+  const handleUpdateItem = async (updatedItem: ClothingItem) => {
+    await saveItemDB(updatedItem);
+    setItems((prev) => prev.map((i) => (i.id === updatedItem.id ? updatedItem : i)));
+    if (selectedItemForModal?.id === updatedItem.id) {
+      setSelectedItemForModal(updatedItem);
+    }
+    showToast(`Prenda actualizada con fondo blanco studio.`);
+  };
+
   const handleDeleteItem = async (id: string) => {
     await deleteItemDB(id);
     setItems((prev) => prev.filter((i) => i.id !== id));
@@ -269,6 +278,7 @@ export default function App() {
         onToggleFavorite={handleToggleFavoriteItem}
         onDeleteItem={handleDeleteItem}
         onSendToStudio={handleSendToStudio}
+        onUpdateItem={handleUpdateItem}
       />
 
       {/* Mobile-First Bottom Navigation Bar */}

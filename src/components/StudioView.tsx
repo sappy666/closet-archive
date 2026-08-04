@@ -296,12 +296,12 @@ export const StudioView: React.FC<StudioViewProps> = ({
                     {/* Item Thumbnail & Details */}
                     {item ? (
                       <div className="flex items-center space-x-3 w-full p-2">
-                        <div className="w-16 h-20 bg-neutral-200 dark:bg-neutral-800 flex-shrink-0 overflow-hidden">
+                        <div className="w-16 h-20 bg-white flex-shrink-0 overflow-hidden border border-white/20 p-1 flex items-center justify-center">
                           <img
                             src={item.imageUrl}
                             alt={item.title}
                             referrerPolicy="no-referrer"
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-contain"
                           />
                         </div>
                         <div className="flex-1 min-w-0 pr-2">

@@ -199,13 +199,13 @@ export const ClosetView: React.FC<ClosetViewProps> = ({
                     {/* Image Box */}
                     <div
                       onClick={() => onSelectItemDetail(item)}
-                      className="relative w-full aspect-[3/4] overflow-hidden bg-white/5 cursor-pointer mt-5 mb-2 flex items-center justify-center"
+                      className="relative w-full aspect-[3/4] overflow-hidden bg-white p-2 cursor-pointer mt-5 mb-2 flex items-center justify-center border border-white/20"
                     >
                       <img
                         src={item.imageUrl}
                         alt={item.title}
                         referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                         <span className="px-2 py-1 bg-white text-black text-[9px] mono font-bold flex items-center gap-1">

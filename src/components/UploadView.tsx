@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Category, CATEGORIES, ClothingItem } from '../types';
-import { Camera, Upload, Sparkles, Check, RefreshCw, X, Image as ImageIcon } from 'lucide-react';
+import { Camera, Upload, Sparkles, Check, RefreshCw, X, Image as ImageIcon, Wand2, Layers } from 'lucide-react';
+import { removeBackgroundToWhite } from '../lib/imageProcessor';
 
 interface UploadViewProps {
   isDarkMode: boolean;
@@ -22,6 +23,9 @@ export const UploadView: React.FC<UploadViewProps> = ({
   const [notes, setNotes] = useState('');
 
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isRemovingBg, setIsRemovingBg] = useState(false);
+  const [hasRemovedBg, setHasRemovedBg] = useState(false);
+  const [autoRemoveBg, setAutoRemoveBg] = useState(true);
   const [aiSuccessMsg, setAiSuccessMsg] = useState<string | null>(null);
   const [useCameraMode, setUseCameraMode] = useState(false);
 
@@ -30,6 +34,42 @@ export const UploadView: React.FC<UploadViewProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
 
+  // Process image for background removal and AI analysis
+  const processNewImage = async (base64Img: string) => {
+    let finalImg = base64Img;
+
+    if (autoRemoveBg) {
+      setIsRemovingBg(true);
+      try {
+        finalImg = await removeBackgroundToWhite(base64Img);
+        setHasRemovedBg(true);
+      } catch (e) {
+        console.warn('Error removing background automatically:', e);
+      } finally {
+        setIsRemovingBg(false);
+      }
+    }
+
+    setImageSrc(finalImg);
+    analyzeImageWithAI(finalImg);
+  };
+
+  // Manual Background Removal trigger
+  const handleRemoveBgManual = async () => {
+    if (!imageSrc || isRemovingBg) return;
+    setIsRemovingBg(true);
+    try {
+      const whiteBgImg = await removeBackgroundToWhite(imageSrc);
+      setImageSrc(whiteBgImg);
+      setHasRemovedBg(true);
+      setAiSuccessMsg('¡Fondo eliminado! Prenda colocada sobre fondo blanco de estudio.');
+    } catch (e) {
+      console.warn('Error removing background manually:', e);
+    } finally {
+      setIsRemovingBg(false);
+    }
+  };
+
   // Handle image file selection or camera capture
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -37,9 +77,7 @@ export const UploadView: React.FC<UploadViewProps> = ({
       const reader = new FileReader();
       reader.onload = (event) => {
         const base64 = event.target?.result as string;
-        setImageSrc(base64);
-        // Automatically trigger AI analysis if available
-        analyzeImageWithAI(base64);
+        processNewImage(base64);
       };
       reader.readAsDataURL(file);
     }
@@ -73,9 +111,8 @@ export const UploadView: React.FC<UploadViewProps> = ({
       if (ctx) {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
-        setImageSrc(dataUrl);
         stopCameraStream();
-        analyzeImageWithAI(dataUrl);
+        processNewImage(dataUrl);
       }
     }
   };
@@ -201,42 +238,62 @@ export const UploadView: React.FC<UploadViewProps> = ({
             </div>
           ) : imageSrc ? (
             /* Selected Image Preview */
-            <div className="relative aspect-[3/4] max-w-xs mx-auto border overflow-hidden group bg-neutral-100 dark:bg-neutral-900 border-neutral-300 dark:border-neutral-800">
+            <div className="relative aspect-[3/4] max-w-xs mx-auto border overflow-hidden group bg-white dark:bg-[#151515] border-white/20">
               <img
                 src={imageSrc}
                 alt="Preview"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain p-2"
               />
 
-              {/* AI Overlay Loader */}
-              {isAnalyzing && (
-                <div className="absolute inset-0 bg-neutral-950/70 backdrop-blur-sm flex flex-col items-center justify-center text-white p-4 text-center">
-                  <RefreshCw className="w-6 h-6 animate-spin mb-2 text-indigo-400" />
-                  <p className="font-mono text-xs font-bold uppercase">
-                    GEMINI AI ANALIZANDO FOTO...
+              {/* White Background Studio Badge */}
+              <div className="absolute top-2 left-2 z-10">
+                <span className="px-2 py-0.5 text-[9px] mono font-bold bg-white text-black border border-black uppercase">
+                  {hasRemovedBg ? 'STUDIO_WHITE_BG' : 'RAW_PHOTO'}
+                </span>
+              </div>
+
+              {/* Removing BG Overlay Loader */}
+              {isRemovingBg && (
+                <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center text-white p-4 text-center z-20">
+                  <Wand2 className="w-6 h-6 animate-pulse mb-2 text-white" />
+                  <p className="mono text-xs font-bold uppercase tracking-wider">
+                    REMOVIENDO FONDO...
                   </p>
-                  <p className="text-[10px] font-mono text-neutral-400 mt-1">
-                    Detectando categoría, color y estilo Y2K
+                  <p className="text-[10px] mono text-white/50 mt-1">
+                    Aislando prenda e insertando fondo blanco studio
                   </p>
                 </div>
               )}
 
-              {/* Retake buttons */}
-              <div className="absolute bottom-2 right-2 flex space-x-2">
+              {/* AI Overlay Loader */}
+              {isAnalyzing && !isRemovingBg && (
+                <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center text-white p-4 text-center z-20">
+                  <RefreshCw className="w-6 h-6 animate-spin mb-2 text-white" />
+                  <p className="mono text-xs font-bold uppercase">
+                    GEMINI AI ANALIZANDO FOTO...
+                  </p>
+                  <p className="text-[10px] mono text-white/50 mt-1">
+                    Detectando categoría, color y estilo
+                  </p>
+                </div>
+              )}
+
+              {/* Retake and Remove BG buttons */}
+              <div className="absolute bottom-2 right-2 left-2 flex flex-wrap gap-1.5 justify-end z-10">
                 <button
                   type="button"
-                  onClick={() => analyzeImageWithAI(imageSrc)}
-                  disabled={isAnalyzing}
-                  className="px-2.5 py-1 bg-indigo-600 text-white font-mono text-[10px] font-bold flex items-center space-x-1 hover:bg-indigo-700"
-                  title="Re-analizar con IA"
+                  onClick={handleRemoveBgManual}
+                  disabled={isRemovingBg}
+                  className="px-2.5 py-1.5 bg-white text-black mono text-[9px] font-bold flex items-center space-x-1 hover:bg-neutral-200 transition-colors shadow-sm"
+                  title="Quitar fondo y colocar sobre blanco studio"
                 >
-                  <Sparkles className="w-3 h-3" />
-                  <span>RE-ANALIZAR</span>
+                  <Wand2 className="w-3 h-3" />
+                  <span>QUITAR FONDO BLANCO</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setImageSrc(null)}
-                  className="px-2.5 py-1 bg-neutral-900 text-white font-mono text-[10px] font-bold"
+                  className="px-2.5 py-1.5 bg-black/80 text-white border border-white/20 mono text-[9px] font-bold hover:bg-black"
                 >
                   CAMBIAR
                 </button>
@@ -283,6 +340,21 @@ export const UploadView: React.FC<UploadViewProps> = ({
                   <ImageIcon className="w-4 h-4" />
                   <span>SELECCIONAR GALERÍA</span>
                 </button>
+              </div>
+
+              {/* Auto Background Removal Setting */}
+              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-left max-w-sm mx-auto">
+                <label className="flex items-center space-x-2.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={autoRemoveBg}
+                    onChange={(e) => setAutoRemoveBg(e.target.checked)}
+                    className="w-4 h-4 accent-white bg-black border-white/20 rounded-none cursor-pointer"
+                  />
+                  <span className="mono text-[10px] text-white/80">
+                    Aislar y poner fondo blanco studio automáticamente
+                  </span>
+                </label>
               </div>
 
               {/* Hidden file inputs */}

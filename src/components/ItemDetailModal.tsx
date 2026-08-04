@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ClothingItem } from '../types';
-import { X, Heart, Trash2, Calendar, Tag, ArrowRight, ShieldCheck } from 'lucide-react';
+import { X, Heart, Trash2, Calendar, Tag, ArrowRight, ShieldCheck, Wand2, RefreshCw } from 'lucide-react';
+import { removeBackgroundToWhite } from '../lib/imageProcessor';
 
 interface ItemDetailModalProps {
   item: ClothingItem | null;
@@ -9,6 +10,7 @@ interface ItemDetailModalProps {
   onToggleFavorite: (id: string) => void;
   onDeleteItem: (id: string) => void;
   onSendToStudio: (item: ClothingItem) => void;
+  onUpdateItem?: (item: ClothingItem) => void;
 }
 
 export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
@@ -17,9 +19,28 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
   onClose,
   onToggleFavorite,
   onDeleteItem,
-  onSendToStudio
+  onSendToStudio,
+  onUpdateItem
 }) => {
+  const [isProcessingBg, setIsProcessingBg] = useState(false);
+
   if (!item) return null;
+
+  const handleRemoveBg = async () => {
+    if (!item || isProcessingBg) return;
+    setIsProcessingBg(true);
+    try {
+      const whiteBgImage = await removeBackgroundToWhite(item.imageUrl);
+      const updatedItem = { ...item, imageUrl: whiteBgImage };
+      if (onUpdateItem) {
+        onUpdateItem(updatedItem);
+      }
+    } catch (e) {
+      console.warn('Error removing background in modal:', e);
+    } finally {
+      setIsProcessingBg(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4">
@@ -29,18 +50,33 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
         }`}
       >
         {/* Left Side: Garment Image */}
-        <div className="sm:w-1/2 aspect-[3/4] sm:aspect-auto relative overflow-hidden bg-[#151515] flex items-center justify-center">
+        <div className="sm:w-1/2 aspect-[3/4] sm:aspect-auto relative overflow-hidden bg-[#151515] flex items-center justify-center group p-2">
           <img
             src={item.imageUrl}
             alt={item.title}
             referrerPolicy="no-referrer"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
           />
           <div className="absolute top-3 left-3">
             <span className="tag mono">
               [{item.category.toUpperCase()}]
             </span>
           </div>
+
+          {/* Remove BG Button overlay */}
+          <button
+            onClick={handleRemoveBg}
+            disabled={isProcessingBg}
+            className="absolute bottom-3 right-3 px-2.5 py-1.5 bg-white text-black mono text-[9px] font-bold flex items-center space-x-1 hover:bg-neutral-200 transition-colors shadow-lg z-10"
+            title="Quitar fondo y poner sobre blanco studio"
+          >
+            {isProcessingBg ? (
+              <RefreshCw className="w-3 h-3 animate-spin" />
+            ) : (
+              <Wand2 className="w-3 h-3" />
+            )}
+            <span>{isProcessingBg ? 'PROCESANDO...' : 'FONDO BLANCO'}</span>
+          </button>
         </div>
 
         {/* Right Side: Metadata & Actions */}

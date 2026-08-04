@@ -170,9 +170,9 @@ export const LookbookView: React.FC<LookbookViewProps> = ({
                     return (
                       <div
                         key={slotKey}
-                        className={`aspect-[3/4] border overflow-hidden relative flex flex-col items-center justify-center ${
+                        className={`aspect-[3/4] border overflow-hidden relative flex flex-col items-center justify-center p-1 ${
                           item
-                            ? 'bg-neutral-100 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700'
+                            ? 'bg-white border-neutral-300 dark:border-white/20'
                             : 'bg-neutral-50 dark:bg-neutral-950/40 border-dashed border-neutral-200 dark:border-neutral-800'
                         }`}
                       >
@@ -182,9 +182,9 @@ export const LookbookView: React.FC<LookbookViewProps> = ({
                               src={item.imageUrl}
                               alt={item.title}
                               referrerPolicy="no-referrer"
-                              className="w-full h-full object-cover"
+                              className="w-full h-full object-contain"
                             />
-                            <span className="absolute bottom-0 inset-x-0 bg-neutral-950/80 text-white text-[8px] font-mono text-center py-0.5 truncate px-1">
+                            <span className="absolute bottom-0 inset-x-0 bg-black/90 text-white text-[7px] mono text-center py-0.5 truncate px-1">
                               {slotKey.toUpperCase()}
                             </span>
                           </>
