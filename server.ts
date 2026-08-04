@@ -68,13 +68,13 @@ async function startServer() {
             text: `Analiza esta prenda de vestir para la marca de ropa streetwear/Y2K @sappy.error.
 Determina:
 1. Categoría exacta (DEBE SER exactamente una de estas 5: "Tops", "Bottoms", "Jackets", "Shoes", "Accessories").
-2. Un título conciso e inspirador (ej. "Boxy Heavyweight Tee", "Parachute Cargo Pants", "Cyber Shield Glasses").
-3. Color dominante (ej. "Negro Carbono", "Plata Metálico", "Gris Washed").
+2. Un título o nombre ALTAMENTE DESCRIPTIVO para la prenda EN ESPAÑOL (ej. "Polera Oversized Negra con Estampado", "Pantalón Cargo Parachute Gris", "Chaqueta Cortaviento Plateada", "Botines de Cuero Plataforma", "Lentes de Sol Cyber Plateados"). El nombre debe ser preciso, elegante y descriptivo en español.
+3. Color dominante en español (ej. "Negro Carbono", "Plata Metálico", "Gris Washed").
 4. Marca (default "@sappy.error" o la que aparente).
-5. Lista de 3 a 4 etiquetas/tags estilo (ej. "Y2K", "Streetwear", "Techwear", "Oversized", "Minimal").
-6. Una breve nota de 1 frase describiendo los detalles del corte o material.
+5. Lista de 3 a 4 etiquetas/tags de estilo en español (ej. "Y2K", "Streetwear", "Techwear", "Oversized", "Minimal").
+6. Una breve nota descriptiva en español de 1 frase detallando el diseño, textura o material.
 
-Responde estrictamente en formato JSON válido.`
+Responde strictly en formato JSON válido.`
           }
         ],
         config: {

@@ -427,21 +427,37 @@ export const UploadView: React.FC<UploadViewProps> = ({
 
           {/* Title */}
           <div>
-            <label className="block text-[11px] font-mono text-neutral-500 mb-1">
-              Nombre de la Prenda
-            </label>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Ej. Parachute Cargo Pants"
-              required
-              className={`w-full px-3 py-2 text-xs font-mono border focus:outline-none focus:ring-1 ${
-                isDarkMode
-                  ? 'bg-neutral-900 border-neutral-800 text-white focus:border-white'
-                  : 'bg-white border-neutral-200 text-neutral-900 focus:border-neutral-900'
-              }`}
-            />
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-[11px] mono text-white/60">
+                Nombre de la Prenda (Sugerencia IA)
+              </label>
+              {imageSrc && (
+                <button
+                  type="button"
+                  onClick={() => analyzeImageWithAI(imageSrc)}
+                  disabled={isAnalyzing}
+                  className="mono text-[9px] text-white/80 hover:text-white flex items-center gap-1 underline underline-offset-2 disabled:opacity-50"
+                  title="Pedir a Gemini que vuelva a analizar y sugiera un nombre descriptivo en español"
+                >
+                  <Sparkles className="w-3 h-3 text-amber-400" />
+                  <span>Sugerir Nombre IA (Español)</span>
+                </button>
+              )}
+            </div>
+            <div className="relative">
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Ej. Polera Boxy Fit Negra con Estampado"
+                required
+                className={`w-full px-3 py-2 text-xs mono border focus:outline-none focus:ring-1 ${
+                  isDarkMode
+                    ? 'bg-[#151515] border-white/10 text-white focus:border-white/40'
+                    : 'bg-white border-neutral-200 text-neutral-900 focus:border-neutral-900'
+                }`}
+              />
+            </div>
           </div>
 
           {/* Grid for Color & Brand */}
