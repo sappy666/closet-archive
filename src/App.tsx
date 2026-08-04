@@ -23,7 +23,7 @@ export default function App() {
   const [items, setItems] = useState<ClothingItem[]>([]);
   const [outfits, setOutfits] = useState<Outfit[]>([]);
   const [activeTab, setActiveTab] = useState<ActiveTab>('closet');
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   // Modals & Triggers
   const [selectedItemForModal, setSelectedItemForModal] = useState<ClothingItem | null>(null);
@@ -196,8 +196,8 @@ export default function App() {
     <div
       className={`min-h-screen flex flex-col font-sans transition-colors duration-200 ${
         isDarkMode
-          ? 'bg-neutral-950 text-neutral-100 selection:bg-white selection:text-neutral-950'
-          : 'bg-neutral-50 text-neutral-900 selection:bg-neutral-900 selection:text-white'
+          ? 'bg-black text-[#F2F2F7] selection:bg-white selection:text-black'
+          : 'bg-[#FFFFFF] text-[#1C1C1E] selection:bg-black selection:text-white'
       }`}
     >
       {/* Top Brand Header */}
@@ -211,16 +211,16 @@ export default function App() {
         onNavigateToUpload={() => setActiveTab('upload')}
       />
 
-      {/* Toast Banner Notification */}
+      {/* Toast Banner Notification (iOS Floating Pill Style) */}
       {toastMessage && (
-        <div className="fixed top-20 right-4 z-50 bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-4 py-3 font-mono text-xs font-bold border border-neutral-700 dark:border-neutral-200 shadow-2xl flex items-center space-x-2 animate-bounce">
+        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-black/90 text-white dark:bg-white dark:text-black px-4 py-2.5 rounded-full text-xs font-medium shadow-2xl flex items-center space-x-2 backdrop-blur-md transition-all">
           <Check className="w-4 h-4 text-emerald-400 dark:text-emerald-600" />
           <span>{toastMessage}</span>
         </div>
       )}
 
       {/* Main Container */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6">
+      <main className="flex-1 max-w-6xl w-full mx-auto px-2 sm:px-4 py-4 sm:py-6">
         {activeTab === 'closet' && (
           <ClosetView
             items={items}

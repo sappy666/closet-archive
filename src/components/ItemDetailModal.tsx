@@ -43,39 +43,34 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-fade-in">
       <div
-        className={`w-full max-w-2xl border-tech shadow-2xl overflow-hidden max-h-[90vh] flex flex-col sm:flex-row ${
-          isDarkMode ? 'bg-[#0A0A0A] text-[#E5E5E5]' : 'bg-white border-neutral-200 text-neutral-900'
+        className={`w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col sm:flex-row border transition-all ${
+          isDarkMode ? 'bg-neutral-900 border-neutral-800 text-white' : 'bg-white border-neutral-200 text-neutral-900'
         }`}
       >
-        {/* Left Side: Garment Image */}
-        <div className="sm:w-1/2 aspect-[3/4] sm:aspect-auto relative overflow-hidden bg-[#151515] flex items-center justify-center group p-2">
+        {/* Left Side: Garment Image on Clean Studio Background */}
+        <div className="sm:w-1/2 aspect-[3/4] sm:aspect-auto relative overflow-hidden bg-white flex items-center justify-center p-6 border-b sm:border-b-0 sm:border-r border-neutral-200 dark:border-neutral-800">
           <img
             src={item.imageUrl}
             alt={item.title}
             referrerPolicy="no-referrer"
             className="w-full h-full object-contain"
           />
-          <div className="absolute top-3 left-3">
-            <span className="tag mono">
-              [{item.category.toUpperCase()}]
-            </span>
-          </div>
 
           {/* Remove BG Button overlay */}
           <button
             onClick={handleRemoveBg}
             disabled={isProcessingBg}
-            className="absolute bottom-3 right-3 px-2.5 py-1.5 bg-white text-black mono text-[9px] font-bold flex items-center space-x-1 hover:bg-neutral-200 transition-colors shadow-lg z-10"
+            className="absolute bottom-3 right-3 px-3 py-1.5 rounded-full bg-black/90 text-white dark:bg-white dark:text-black text-xs font-medium flex items-center space-x-1.5 hover:opacity-90 transition-opacity shadow-md z-10"
             title="Quitar fondo y poner sobre blanco studio"
           >
             {isProcessingBg ? (
-              <RefreshCw className="w-3 h-3 animate-spin" />
+              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
             ) : (
-              <Wand2 className="w-3 h-3" />
+              <Wand2 className="w-3.5 h-3.5" />
             )}
-            <span>{isProcessingBg ? 'PROCESANDO...' : 'FONDO BLANCO'}</span>
+            <span>{isProcessingBg ? 'Procesando...' : 'Fondo Blanco'}</span>
           </button>
         </div>
 
@@ -151,25 +146,25 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
                 onSendToStudio(item);
                 onClose();
               }}
-              className="w-full py-2.5 bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-mono font-bold text-xs uppercase tracking-wider flex items-center justify-center space-x-2 hover:opacity-90"
+              className="w-full py-3 bg-black text-white dark:bg-white dark:text-black rounded-full font-medium text-xs tracking-wide flex items-center justify-center space-x-2 hover:opacity-90 shadow-sm"
             >
-              <span>COMBINAR EN CREADOR DE OUTFITS</span>
+              <span>Combinar en Creador de Outfits</span>
               <ArrowRight className="w-4 h-4" />
             </button>
 
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => onToggleFavorite(item.id)}
-                className={`flex-1 py-2 text-xs font-mono font-bold border flex items-center justify-center space-x-1.5 ${
+                className={`flex-1 py-2.5 rounded-full text-xs font-medium border flex items-center justify-center space-x-1.5 transition-colors ${
                   item.isFavorite
                     ? 'bg-rose-500 text-white border-rose-500'
                     : isDarkMode
-                    ? 'border-neutral-800 text-neutral-300 hover:border-neutral-700'
-                    : 'border-neutral-200 text-neutral-700 hover:border-neutral-300'
+                    ? 'border-neutral-800 text-neutral-300 hover:bg-neutral-800'
+                    : 'border-neutral-200 text-neutral-700 hover:bg-neutral-100'
                 }`}
               >
                 <Heart className={`w-3.5 h-3.5 ${item.isFavorite ? 'fill-current' : ''}`} />
-                <span>{item.isFavorite ? 'FAVORITO' : 'MARCAR FAVORITO'}</span>
+                <span>{item.isFavorite ? 'Favorito' : 'Guardar Favorito'}</span>
               </button>
 
               <button
@@ -179,7 +174,7 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
                     onClose();
                   }
                 }}
-                className="p-2 border border-neutral-200 dark:border-neutral-800 text-neutral-400 hover:text-rose-500 hover:border-rose-500 transition-colors"
+                className="p-2.5 rounded-full border border-neutral-200 dark:border-neutral-800 text-neutral-400 hover:text-rose-500 hover:border-rose-500 transition-colors"
                 title="Eliminar prenda"
               >
                 <Trash2 className="w-4 h-4" />

@@ -427,19 +427,19 @@ export const UploadView: React.FC<UploadViewProps> = ({
 
           {/* Title */}
           <div>
-            <div className="flex items-center justify-between mb-1">
-              <label className="block text-[11px] mono text-white/60">
-                Nombre de la Prenda (Sugerencia IA)
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-medium text-neutral-600 dark:text-neutral-400">
+                Nombre de la Prenda
               </label>
               {imageSrc && (
                 <button
                   type="button"
                   onClick={() => analyzeImageWithAI(imageSrc)}
                   disabled={isAnalyzing}
-                  className="mono text-[9px] text-white/80 hover:text-white flex items-center gap-1 underline underline-offset-2 disabled:opacity-50"
+                  className="text-xs text-neutral-800 dark:text-neutral-200 hover:opacity-80 flex items-center gap-1 font-medium disabled:opacity-50"
                   title="Pedir a Gemini que vuelva a analizar y sugiera un nombre descriptivo en español"
                 >
-                  <Sparkles className="w-3 h-3 text-amber-400" />
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                   <span>Sugerir Nombre IA (Español)</span>
                 </button>
               )}
@@ -451,10 +451,10 @@ export const UploadView: React.FC<UploadViewProps> = ({
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Ej. Polera Boxy Fit Negra con Estampado"
                 required
-                className={`w-full px-3 py-2 text-xs mono border focus:outline-none focus:ring-1 ${
+                className={`w-full px-4 py-2.5 text-xs rounded-xl border focus:outline-none transition-all ${
                   isDarkMode
-                    ? 'bg-[#151515] border-white/10 text-white focus:border-white/40'
-                    : 'bg-white border-neutral-200 text-neutral-900 focus:border-neutral-900'
+                    ? 'bg-neutral-900 border-neutral-800 text-white placeholder-neutral-500 focus:border-white/30'
+                    : 'bg-neutral-100 border-neutral-200 text-neutral-900 placeholder-neutral-400 focus:border-black/30'
                 }`}
               />
             </div>
@@ -539,20 +539,20 @@ export const UploadView: React.FC<UploadViewProps> = ({
           <button
             type="button"
             onClick={onCancel}
-            className={`px-4 py-2.5 text-xs font-mono border transition-colors ${
+            className={`px-4 py-2.5 text-xs font-medium rounded-full border transition-colors ${
               isDarkMode
                 ? 'border-neutral-800 text-neutral-400 hover:text-white'
                 : 'border-neutral-200 text-neutral-600 hover:text-neutral-900'
             }`}
           >
-            CANCELAR
+            Cancelar
           </button>
           <button
             type="submit"
             disabled={!imageSrc}
-            className="px-6 py-2.5 bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-mono font-bold text-xs uppercase tracking-wider hover:opacity-90 disabled:opacity-50 transition-opacity"
+            className="px-6 py-2.5 bg-black text-white dark:bg-white dark:text-black rounded-full font-semibold text-xs tracking-wide hover:opacity-90 disabled:opacity-40 transition-opacity shadow-sm"
           >
-            GUARDAR PRENDA EN ARMARIO
+            Guardar Prenda
           </button>
         </div>
       </form>

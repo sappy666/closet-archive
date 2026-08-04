@@ -273,8 +273,8 @@ export const StudioView: React.FC<StudioViewProps> = ({
           </div>
 
           {/* Canvas Display */}
-          <div className={`p-4 border transition-colors ${
-            isDarkMode ? 'bg-neutral-950 border-neutral-800' : 'bg-neutral-100 border-neutral-200'
+          <div className={`p-4 rounded-2xl border transition-colors ${
+            isDarkMode ? 'bg-neutral-900/60 border-neutral-800' : 'bg-neutral-100/70 border-neutral-200'
           }`}>
             <div className={layoutMode === 'vertical' ? 'space-y-3 max-w-sm mx-auto' : 'grid grid-cols-2 gap-3'}>
               {slots.map((slot) => {
@@ -283,20 +283,20 @@ export const StudioView: React.FC<StudioViewProps> = ({
                   <div
                     key={slot.id}
                     onClick={() => setActivePickerCategory(slot.id)}
-                    className={`relative border group cursor-pointer transition-all overflow-hidden flex items-center justify-between ${
+                    className={`relative rounded-2xl border group cursor-pointer transition-all overflow-hidden flex items-center justify-between ${
                       item
                         ? isDarkMode
                           ? 'bg-neutral-900 border-neutral-700 hover:border-white'
-                          : 'bg-white border-neutral-300 hover:border-neutral-900'
+                          : 'bg-white border-neutral-200 hover:border-black/30 shadow-xs'
                         : isDarkMode
                         ? 'bg-neutral-900/40 border-dashed border-neutral-800 hover:border-neutral-700'
-                        : 'bg-white/50 border-dashed border-neutral-300 hover:border-neutral-400'
+                        : 'bg-white/60 border-dashed border-neutral-300 hover:border-neutral-400'
                     }`}
                   >
                     {/* Item Thumbnail & Details */}
                     {item ? (
-                      <div className="flex items-center space-x-3 w-full p-2">
-                        <div className="w-16 h-20 bg-white flex-shrink-0 overflow-hidden border border-white/20 p-1 flex items-center justify-center">
+                      <div className="flex items-center space-x-3 w-full p-2.5">
+                        <div className="w-16 h-20 bg-white rounded-xl flex-shrink-0 overflow-hidden border border-neutral-200 dark:border-white/10 p-1 flex items-center justify-center">
                           <img
                             src={item.imageUrl}
                             alt={item.title}
@@ -305,12 +305,12 @@ export const StudioView: React.FC<StudioViewProps> = ({
                           />
                         </div>
                         <div className="flex-1 min-w-0 pr-2">
-                          <span className="text-[9px] font-mono font-bold px-1 py-0.2 bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 uppercase">
-                            [{slot.id.toUpperCase()}]
+                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200 uppercase tracking-wide">
+                            {slot.id}
                           </span>
-                          <h4 className="font-bold text-xs truncate mt-1">{item.title}</h4>
+                          <h4 className="font-semibold text-xs truncate mt-1.5">{item.brand || item.title}</h4>
                           {item.color && (
-                            <p className="text-[10px] font-mono text-neutral-500 truncate">
+                            <p className="text-[10px] text-neutral-400 truncate">
                               {item.color}
                             </p>
                           )}
@@ -320,10 +320,10 @@ export const StudioView: React.FC<StudioViewProps> = ({
                             e.stopPropagation();
                             slot.setter(undefined);
                           }}
-                          className="p-1.5 text-neutral-400 hover:text-rose-500 transition-colors"
+                          className="p-1.5 rounded-full text-neutral-400 hover:text-rose-500 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
                           title="Remover slot"
                         >
-                          <X className="w-3.5 h-3.5" />
+                          <X className="w-4 h-4" />
                         </button>
                       </div>
                     ) : (
@@ -331,8 +331,8 @@ export const StudioView: React.FC<StudioViewProps> = ({
                       <div className="w-full p-4 flex items-center justify-between text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200">
                         <div className="flex items-center space-x-2">
                           <Plus className="w-4 h-4" />
-                          <span className="text-xs font-mono font-bold uppercase tracking-wider">
-                            SELECCIONAR {slot.label}
+                          <span className="text-xs font-medium uppercase tracking-wider">
+                            Seleccionar {slot.label}
                           </span>
                         </div>
                         <ChevronRight className="w-4 h-4 opacity-50 group-hover:translate-x-1 transition-transform" />
