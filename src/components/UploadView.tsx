@@ -213,43 +213,43 @@ export const UploadView: React.FC<UploadViewProps> = ({
 
       {/* Title */}
       <div>
-        <h2 className="text-2xl sm:text-3xl font-light tracking-tight font-sans">
-          Registrar <span className="text-neutral-400 dark:text-white/40 font-serif italic">Prenda</span>
+        <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">
+          Agregar <span className="font-serif italic text-neutral-500 font-normal">Prenda</span>
         </h2>
-        <p className="text-[10px] text-neutral-400 mt-1">
-          Reconocimiento automático y Fondo Blanco Studio
+        <p className="text-xs text-neutral-500 mt-1">
+          Sube una foto. El reconocimiento automático detectará categoría, color y etiquetas en segundos.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Photo Upload Area */}
         <div className="space-y-3">
-          <label className="block text-xs font-mono font-bold uppercase tracking-wider">
-            1. FOTO DE LA PRENDA
+          <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500">
+            1. Foto de la Prenda
           </label>
 
           {/* Live Camera Stream */}
           {useCameraMode ? (
-            <div className="relative aspect-[3/4] max-w-sm mx-auto bg-black overflow-hidden border border-neutral-800 flex flex-col justify-between">
+            <div className="relative aspect-[3/4] max-w-sm mx-auto bg-black rounded-2xl overflow-hidden border border-neutral-800 flex flex-col justify-between shadow-lg">
               <video
                 ref={videoRef}
                 autoPlay
                 playsInline
                 className="w-full h-full object-cover"
               />
-              <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center space-x-4">
+              <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center space-x-3">
                 <button
                   type="button"
                   onClick={capturePhotoFromStream}
-                  className="px-5 py-2.5 bg-white text-black font-mono font-bold text-xs flex items-center space-x-2 shadow-lg"
+                  className="px-5 py-2.5 bg-white text-black rounded-full font-semibold text-xs flex items-center space-x-2 shadow-lg cursor-pointer hover:bg-neutral-200 transition-colors"
                 >
                   <Camera className="w-4 h-4" />
-                  <span>CAPTURAR FOTO</span>
+                  <span>Tomar Foto</span>
                 </button>
                 <button
                   type="button"
                   onClick={stopCameraStream}
-                  className="p-2.5 bg-neutral-900 text-white font-mono text-xs border border-neutral-700"
+                  className="p-2.5 bg-neutral-900/90 text-white rounded-full border border-neutral-700 hover:bg-neutral-800 cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -257,82 +257,82 @@ export const UploadView: React.FC<UploadViewProps> = ({
             </div>
           ) : imageSrc ? (
             /* Selected Image Preview */
-            <div className="relative aspect-[3/4] max-w-xs mx-auto border overflow-hidden group bg-white dark:bg-[#151515] border-white/20">
+            <div className="relative aspect-[3/4] max-w-xs mx-auto border rounded-2xl overflow-hidden group bg-white dark:bg-[#151515] border-neutral-200 dark:border-neutral-800 shadow-md">
               <img
                 src={imageSrc}
-                alt="Preview"
-                className="w-full h-full object-contain p-2"
+                alt="Vista previa"
+                className="w-full h-full object-contain p-3"
               />
 
               {/* White Background Studio Badge */}
-              <div className="absolute top-2 left-2 z-10">
-                <span className="px-2 py-0.5 text-[9px] mono font-bold bg-white text-black border border-black uppercase">
-                  {hasRemovedBg ? 'STUDIO_WHITE_BG' : 'RAW_PHOTO'}
+              <div className="absolute top-3 left-3 z-10">
+                <span className="px-2.5 py-1 text-[10px] font-semibold bg-white/90 dark:bg-black/80 backdrop-blur-md text-neutral-800 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700 rounded-full shadow-xs">
+                  {hasRemovedBg ? 'Fondo Blanco Studio' : 'Foto Original'}
                 </span>
               </div>
 
               {/* Removing BG Overlay Loader */}
               {isRemovingBg && (
-                <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center text-white p-4 text-center z-20">
-                  <Wand2 className="w-6 h-6 animate-pulse mb-2 text-white" />
-                  <p className="mono text-xs font-bold uppercase tracking-wider">
-                    REMOVIENDO FONDO...
+                <div className="absolute inset-0 bg-black/80 backdrop-blur-xs flex flex-col items-center justify-center text-white p-4 text-center z-20 space-y-2">
+                  <Wand2 className="w-6 h-6 animate-pulse text-amber-400" />
+                  <p className="text-xs font-semibold">
+                    Aislando prenda...
                   </p>
-                  <p className="text-[10px] mono text-white/50 mt-1">
-                    Aislando prenda e insertando fondo blanco studio
+                  <p className="text-[10px] text-neutral-300">
+                    Removiendo fondo para recortar en alta calidad
                   </p>
                 </div>
               )}
 
               {/* AI Overlay Loader */}
               {isAnalyzing && !isRemovingBg && (
-                <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center text-white p-4 text-center z-20">
-                  <RefreshCw className="w-6 h-6 animate-spin mb-2 text-white" />
-                  <p className="mono text-xs font-bold uppercase">
-                    ANALIZANDO PRENDA AUTOMÁTICAMENTE...
+                <div className="absolute inset-0 bg-black/70 backdrop-blur-xs flex flex-col items-center justify-center text-white p-4 text-center z-20 space-y-2">
+                  <RefreshCw className="w-6 h-6 animate-spin text-amber-400" />
+                  <p className="text-xs font-semibold">
+                    Analizando prenda...
                   </p>
-                  <p className="text-[10px] mono text-white/50 mt-1">
-                    Detectando categoría, color y estilo
+                  <p className="text-[10px] text-neutral-300">
+                    Detectando automáticamente detalles y categoría
                   </p>
                 </div>
               )}
 
               {/* Retake and Remove BG buttons */}
-              <div className="absolute bottom-2 right-2 left-2 flex flex-wrap gap-1.5 justify-end z-10">
+              <div className="absolute bottom-3 right-3 left-3 flex flex-wrap gap-1.5 justify-end z-10">
                 <button
                   type="button"
                   onClick={handleRemoveBgManual}
                   disabled={isRemovingBg}
-                  className="px-2.5 py-1.5 bg-white text-black mono text-[9px] font-bold flex items-center space-x-1 hover:bg-neutral-200 transition-colors shadow-sm"
+                  className="px-3 py-1.5 bg-white text-black text-[10px] font-semibold rounded-full flex items-center space-x-1 hover:bg-neutral-200 transition-colors shadow-xs cursor-pointer disabled:opacity-50"
                   title="Quitar fondo y colocar sobre blanco studio"
                 >
-                  <Wand2 className="w-3 h-3" />
-                  <span>QUITAR FONDO BLANCO</span>
+                  <Wand2 className="w-3 h-3 text-amber-500" />
+                  <span>Quitar Fondo</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setImageSrc(null)}
-                  className="px-2.5 py-1.5 bg-black/80 text-white border border-white/20 mono text-[9px] font-bold hover:bg-black"
+                  className="px-3 py-1.5 bg-black/80 text-white rounded-full text-[10px] font-semibold hover:bg-black transition-colors cursor-pointer"
                 >
-                  CAMBIAR
+                  Cambiar Foto
                 </button>
               </div>
             </div>
           ) : (
             /* Upload Placeholders */
-            <div className={`border-2 border-dashed p-8 text-center transition-colors ${
+            <div className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all ${
               isDarkMode
-                ? 'border-neutral-800 bg-neutral-900/40 hover:border-neutral-700'
-                : 'border-neutral-300 bg-neutral-50 hover:border-neutral-400'
+                ? 'border-neutral-800 bg-neutral-900/30 hover:border-neutral-700'
+                : 'border-neutral-200 bg-neutral-50/80 hover:border-neutral-300'
             }`}>
-              <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center border border-neutral-300 dark:border-neutral-700 text-neutral-500">
-                <Camera className="w-6 h-6" />
+              <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-500 shadow-2xs">
+                <Camera className="w-5 h-5" />
               </div>
-              <p className="font-mono text-xs font-bold uppercase tracking-wide">
-                SUBE O TOMA UNA FOTO DE LA PRENDA
+              <p className="text-xs font-semibold text-neutral-800 dark:text-neutral-200">
+                Arrastra una foto aquí o selecciona tu opción preferida
               </p>
-              <p className="text-[11px] font-mono text-neutral-500 mt-1 max-w-xs mx-auto">
-                Soporta archivos JPG, PNG y WebP. La cámara del dispositivo está integrada.
+              <p className="text-[11px] text-neutral-500 mt-1 max-w-xs mx-auto">
+                Admite JPG, PNG y WebP. También puedes usar la cámara de tu dispositivo.
               </p>
 
               <div className="mt-5 flex flex-wrap justify-center gap-3">
@@ -340,38 +340,38 @@ export const UploadView: React.FC<UploadViewProps> = ({
                 <button
                   type="button"
                   onClick={startCameraStream}
-                  className="px-4 py-2.5 bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-mono font-bold text-xs flex items-center space-x-2 hover:opacity-90 transition-opacity"
+                  className="px-4 py-2.5 bg-black text-white dark:bg-white dark:text-black rounded-full font-semibold text-xs flex items-center space-x-2 hover:opacity-90 transition-opacity cursor-pointer shadow-xs"
                 >
                   <Camera className="w-4 h-4" />
-                  <span>USAR CÁMARA</span>
+                  <span>Usar Cámara</span>
                 </button>
 
                 {/* Upload File Button */}
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className={`px-4 py-2.5 border font-mono font-bold text-xs flex items-center space-x-2 transition-colors ${
+                  className={`px-4 py-2.5 rounded-full border font-semibold text-xs flex items-center space-x-2 transition-colors cursor-pointer ${
                     isDarkMode
                       ? 'border-neutral-700 bg-neutral-800 hover:bg-neutral-700 text-white'
-                      : 'border-neutral-300 bg-white hover:bg-neutral-100 text-neutral-800'
+                      : 'border-neutral-200 bg-white hover:bg-neutral-100 text-neutral-800'
                   }`}
                 >
                   <ImageIcon className="w-4 h-4" />
-                  <span>SELECCIONAR GALERÍA</span>
+                  <span>Abrir Galería</span>
                 </button>
               </div>
 
               {/* Auto Background Removal Setting */}
-              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-left max-w-sm mx-auto">
+              <div className="mt-6 pt-4 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-center text-left max-w-sm mx-auto">
                 <label className="flex items-center space-x-2.5 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={autoRemoveBg}
                     onChange={(e) => setAutoRemoveBg(e.target.checked)}
-                    className="w-4 h-4 accent-white bg-black border-white/20 rounded-none cursor-pointer"
+                    className="w-4 h-4 accent-black dark:accent-white rounded cursor-pointer"
                   />
-                  <span className="mono text-[10px] text-white/80">
-                    Aislar y poner fondo blanco studio automáticamente
+                  <span className="text-xs text-neutral-600 dark:text-neutral-400">
+                    Aislar prenda y colocar fondo blanco automáticamente
                   </span>
                 </label>
               </div>
@@ -406,10 +406,10 @@ export const UploadView: React.FC<UploadViewProps> = ({
 
         {/* Category Selection */}
         <div className="space-y-3">
-          <label className="block text-xs font-mono font-bold uppercase tracking-wider">
-            2. SELECCIONA CATEGORÍA DE PRENDA
+          <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500">
+            2. Selecciona la Categoría
           </label>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
             {CATEGORIES.map((cat) => {
               const isSelected = category === cat.id;
               return (
@@ -417,19 +417,18 @@ export const UploadView: React.FC<UploadViewProps> = ({
                   key={cat.id}
                   type="button"
                   onClick={() => setCategory(cat.id)}
-                  className={`p-3 border text-left font-mono transition-all ${
+                  className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
                     isSelected
                       ? isDarkMode
-                        ? 'bg-white text-neutral-900 border-white font-bold'
-                        : 'bg-neutral-900 text-white border-neutral-900 font-bold'
+                        ? 'bg-white text-black border-white font-semibold shadow-xs'
+                        : 'bg-black text-white border-black font-semibold shadow-xs'
                       : isDarkMode
-                      ? 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:border-neutral-700'
-                      : 'bg-white border-neutral-200 text-neutral-700 hover:border-neutral-300'
+                      ? 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:border-neutral-700 hover:text-neutral-200'
+                      : 'bg-white border-neutral-200 text-neutral-700 hover:border-neutral-300 hover:text-black'
                   }`}
                 >
-                  <div className="text-[10px] opacity-70">[{cat.code}]</div>
-                  <div className="text-xs font-bold mt-0.5">{cat.label}</div>
-                  <div className="text-[9px] text-neutral-400 truncate mt-1">
+                  <div className="text-xs font-semibold">{cat.label}</div>
+                  <div className="text-[10px] opacity-70 truncate mt-0.5">
                     {cat.description}
                   </div>
                 </button>
@@ -440,14 +439,14 @@ export const UploadView: React.FC<UploadViewProps> = ({
 
         {/* Details Form Fields */}
         <div className="space-y-4 pt-2">
-          <label className="block text-xs font-mono font-bold uppercase tracking-wider">
-            3. DETALLES DE LA PRENDA
+          <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500">
+            3. Detalles de la Prenda
           </label>
 
           {/* Title */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-medium text-neutral-600 dark:text-neutral-400">
+              <label className="block text-xs font-medium text-neutral-700 dark:text-neutral-300">
                 Nombre de la Prenda
               </label>
               {imageSrc && (
@@ -455,7 +454,7 @@ export const UploadView: React.FC<UploadViewProps> = ({
                   type="button"
                   onClick={() => analyzeImageWithAI(imageSrc)}
                   disabled={isAnalyzing}
-                  className="text-xs text-neutral-800 dark:text-neutral-200 hover:opacity-80 flex items-center gap-1 font-medium disabled:opacity-50"
+                  className="text-xs text-neutral-800 dark:text-neutral-200 hover:opacity-80 flex items-center gap-1 font-medium disabled:opacity-50 cursor-pointer"
                   title="Sugerir nombre automático según categoría y color"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-500" />
@@ -482,35 +481,35 @@ export const UploadView: React.FC<UploadViewProps> = ({
           {/* Grid for Color & Brand */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-[11px] font-mono text-neutral-500 mb-1">
+              <label className="block text-xs font-medium text-neutral-700 dark:text-neutral-300 mb-1">
                 Color Principal
               </label>
               <input
                 type="text"
                 value={color}
                 onChange={(e) => setColor(e.target.value)}
-                placeholder="Ej. Negro Mate / Plata"
-                className={`w-full px-3 py-2 text-xs font-mono border focus:outline-none focus:ring-1 ${
+                placeholder="Ej. Negro, Plata, Azul Denim"
+                className={`w-full px-3.5 py-2.5 text-xs rounded-xl border transition-all focus:outline-none ${
                   isDarkMode
-                    ? 'bg-neutral-900 border-neutral-800 text-white focus:border-white'
-                    : 'bg-white border-neutral-200 text-neutral-900 focus:border-neutral-900'
+                    ? 'bg-neutral-900 border-neutral-800 text-white placeholder-neutral-500 focus:border-white/30'
+                    : 'bg-neutral-100 border-neutral-200 text-neutral-900 placeholder-neutral-400 focus:border-black/30'
                 }`}
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-mono text-neutral-500 mb-1">
-                Marca / Diseñador
+              <label className="block text-xs font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                Marca / Creador (Opcional)
               </label>
               <input
                 type="text"
                 value={brand}
                 onChange={(e) => setBrand(e.target.value)}
-                placeholder="Ej. Marca u Opcional"
-                className={`w-full px-3 py-2 text-xs font-mono border focus:outline-none focus:ring-1 ${
+                placeholder="Ej. Zara, Vintage, Hecho a mano"
+                className={`w-full px-3.5 py-2.5 text-xs rounded-xl border transition-all focus:outline-none ${
                   isDarkMode
-                    ? 'bg-neutral-900 border-neutral-800 text-white focus:border-white'
-                    : 'bg-white border-neutral-200 text-neutral-900 focus:border-neutral-900'
+                    ? 'bg-neutral-900 border-neutral-800 text-white placeholder-neutral-500 focus:border-white/30'
+                    : 'bg-neutral-100 border-neutral-200 text-neutral-900 placeholder-neutral-400 focus:border-black/30'
                 }`}
               />
             </div>
@@ -518,36 +517,36 @@ export const UploadView: React.FC<UploadViewProps> = ({
 
           {/* Tags */}
           <div>
-            <label className="block text-[11px] font-mono text-neutral-500 mb-1">
-              Etiquetas / Tags de Estilo (separadas por coma)
+            <label className="block text-xs font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+              Etiquetas de Estilo (separadas por coma)
             </label>
             <input
               type="text"
               value={tagsInput}
               onChange={(e) => setTagsInput(e.target.value)}
-              placeholder="Y2K, Techwear, Oversized, Noche"
-              className={`w-full px-3 py-2 text-xs font-mono border focus:outline-none focus:ring-1 ${
+              placeholder="Ej. Minimal, Oversized, Noche, Atemporal"
+              className={`w-full px-3.5 py-2.5 text-xs rounded-xl border transition-all focus:outline-none ${
                 isDarkMode
-                  ? 'bg-neutral-900 border-neutral-800 text-white focus:border-white'
-                  : 'bg-white border-neutral-200 text-neutral-900 focus:border-neutral-900'
+                  ? 'bg-neutral-900 border-neutral-800 text-white placeholder-neutral-500 focus:border-white/30'
+                  : 'bg-neutral-100 border-neutral-200 text-neutral-900 placeholder-neutral-400 focus:border-black/30'
               }`}
             />
           </div>
 
           {/* Notes */}
           <div>
-            <label className="block text-[11px] font-mono text-neutral-500 mb-1">
-              Notas adicionales (material, fit, cuidados)
+            <label className="block text-xs font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+              Notas Adicionales (Opcional)
             </label>
             <textarea
               rows={2}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Algodón 280gsm con lavado ácido..."
-              className={`w-full px-3 py-2 text-xs font-mono border focus:outline-none focus:ring-1 ${
+              placeholder="Algodón de alto gramaje, talle holgado..."
+              className={`w-full px-3.5 py-2.5 text-xs rounded-xl border transition-all focus:outline-none ${
                 isDarkMode
-                  ? 'bg-neutral-900 border-neutral-800 text-white focus:border-white'
-                  : 'bg-white border-neutral-200 text-neutral-900 focus:border-neutral-900'
+                  ? 'bg-neutral-900 border-neutral-800 text-white placeholder-neutral-500 focus:border-white/30'
+                  : 'bg-neutral-100 border-neutral-200 text-neutral-900 placeholder-neutral-400 focus:border-black/30'
               }`}
             />
           </div>

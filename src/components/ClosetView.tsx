@@ -73,12 +73,12 @@ export const ClosetView: React.FC<ClosetViewProps> = ({
       <div className="border-b border-neutral-200 dark:border-neutral-800 -mx-2 sm:-mx-4 px-2 sm:px-4">
         <div className="flex items-center space-x-6 overflow-x-auto no-scrollbar py-2">
           {[
-            { id: 'All', label: 'All' },
+            { id: 'All', label: 'Todo' },
             { id: 'Tops', label: 'Tops' },
-            { id: 'Bottoms', label: 'Pants' },
-            { id: 'Jackets', label: 'Outerwear' },
-            { id: 'Shoes', label: 'Shoes' },
-            { id: 'Accessories', label: 'Bags & Acc' },
+            { id: 'Bottoms', label: 'Pantalones' },
+            { id: 'Jackets', label: 'Abrigos' },
+            { id: 'Shoes', label: 'Calzado' },
+            { id: 'Accessories', label: 'Accesorios' },
           ].map((cat) => {
             const isSelected = selectedCategory === cat.id;
             return (
@@ -185,15 +185,24 @@ export const ClosetView: React.FC<ClosetViewProps> = ({
 
       {/* Main iOS Grid (3 Columns) */}
       {filteredItems.length === 0 ? (
-        <div className="py-20 text-center bg-neutral-50 dark:bg-neutral-900/40 rounded-2xl border border-neutral-200 dark:border-neutral-800 my-4">
-          <p className="text-xs font-medium text-neutral-500 mb-3">
-            No se encontraron prendas en esta categoría.
-          </p>
+        <div className="py-16 px-6 text-center bg-neutral-50 dark:bg-neutral-900/40 rounded-2xl border border-dashed border-neutral-200 dark:border-neutral-800 my-4 space-y-3">
+          <div className="w-12 h-12 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mx-auto text-neutral-400">
+            <Tag className="w-5 h-5" />
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">
+              No hay prendas en este filtro
+            </h3>
+            <p className="text-xs text-neutral-500 mt-0.5">
+              Prueba cambiando la búsqueda o añade una nueva prenda a tu armario.
+            </p>
+          </div>
           <button
             onClick={onNavigateToUpload}
-            className="px-4 py-2 bg-black text-white dark:bg-white dark:text-black rounded-full text-xs font-semibold shadow-sm hover:opacity-90 transition-opacity"
+            className="inline-flex items-center space-x-2 px-4 py-2 bg-black text-white dark:bg-white dark:text-black rounded-full text-xs font-semibold shadow-xs hover:opacity-90 transition-opacity cursor-pointer"
           >
-            + Agregar Prenda
+            <Plus className="w-3.5 h-3.5" />
+            <span>Agregar Nueva Prenda</span>
           </button>
         </div>
       ) : (

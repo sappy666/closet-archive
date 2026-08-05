@@ -176,13 +176,13 @@ export const StudioView: React.FC<StudioViewProps> = ({
   return (
     <div className="space-y-6 pb-28">
       {/* Title & Toolbar */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b pb-4 border-white/10">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b pb-4 border-neutral-200 dark:border-neutral-800">
         <div>
-          <h2 className="text-2xl sm:text-3xl font-light tracking-tight font-sans">
-            Outfit <span className="text-white/30 font-serif italic">Studio</span>
+          <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">
+            Creador de <span className="font-serif italic text-neutral-500 font-normal">Outfits</span>
           </h2>
-          <p className="text-[10px] mono text-white/40 mt-1">
-            ACTIVE_SELECTION // LAYERING & SILHOUETTE BUILDER
+          <p className="text-xs text-neutral-500 mt-1">
+            Combina prendas de tu armario y visualiza tu outfit completo en tiempo real.
           </p>
         </div>
 
@@ -190,31 +190,33 @@ export const StudioView: React.FC<StudioViewProps> = ({
         <div className="flex items-center space-x-2">
           <button
             onClick={handleRandomize}
-            className={`px-3 py-1.5 text-[10px] mono font-bold border flex items-center space-x-1.5 transition-colors ${
+            className={`px-3.5 py-2 rounded-full text-xs font-medium border flex items-center space-x-1.5 transition-all cursor-pointer shadow-2xs ${
               isDarkMode
-                ? 'bg-[#151515] border-white/10 text-white hover:border-white/30'
-                : 'bg-white border-neutral-300 text-neutral-900 hover:bg-neutral-100'
+                ? 'bg-neutral-900 border-neutral-800 text-white hover:bg-neutral-800'
+                : 'bg-white border-neutral-200 text-neutral-800 hover:bg-neutral-100'
             }`}
             title="Generar combinación aleatoria"
           >
             <Shuffle className="w-3.5 h-3.5" />
-            <span>RANDOMIZE</span>
+            <span>Mezclar</span>
           </button>
 
           <button
             onClick={handleRunVibeCheck}
             disabled={isVibeChecking}
-            className="px-3 py-1.5 bg-white text-black font-mono font-bold text-[10px] flex items-center space-x-1.5 hover:bg-neutral-200 transition-colors disabled:opacity-50"
+            className="px-3.5 py-2 rounded-full bg-black text-white dark:bg-white dark:text-black font-semibold text-xs flex items-center space-x-1.5 hover:opacity-90 transition-all cursor-pointer shadow-2xs disabled:opacity-50"
             title="Evaluar combinación de prendas"
           >
-            <Sparkles className={`w-3.5 h-3.5 ${isVibeChecking ? 'animate-spin' : ''}`} />
-            <span>EVALUAR ESTILO</span>
+            <Sparkles className={`w-3.5 h-3.5 text-amber-400 dark:text-amber-600 ${isVibeChecking ? 'animate-spin' : ''}`} />
+            <span>Evaluar Estilo</span>
           </button>
 
           <button
             onClick={handleClearSlots}
-            className={`p-1.5 border text-white/40 hover:text-white ${
-              isDarkMode ? 'border-white/10 bg-[#151515]' : 'border-neutral-200 bg-white'
+            className={`p-2 rounded-full border transition-colors cursor-pointer ${
+              isDarkMode
+                ? 'border-neutral-800 bg-neutral-900 text-neutral-400 hover:text-white hover:bg-neutral-800'
+                : 'border-neutral-200 bg-white text-neutral-500 hover:text-black hover:bg-neutral-100'
             }`}
             title="Limpiar combinación"
           >
@@ -385,70 +387,75 @@ export const StudioView: React.FC<StudioViewProps> = ({
         <div className="lg:col-span-5 space-y-4">
           <form
             onSubmit={handleSaveOutfit}
-            className={`p-5 border-tech space-y-4 ${
-              isDarkMode ? 'bg-[#0D0D0D]' : 'bg-white border-neutral-200'
+            className={`p-5 rounded-2xl border space-y-4 shadow-sm ${
+              isDarkMode ? 'bg-neutral-900/70 border-neutral-800 text-white' : 'bg-white border-neutral-200 text-neutral-900'
             }`}
           >
-            <h3 className="mono text-[10px] text-white/40 mb-4 border-b border-white/10 pb-2 flex items-center justify-between">
-              <span>Outfit_Studio / active_selection</span>
-              <Save className="w-3.5 h-3.5" />
-            </h3>
+            <div className="flex items-center justify-between border-b pb-3 border-neutral-200 dark:border-neutral-800">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-500 flex items-center gap-1.5">
+                <Save className="w-3.5 h-3.5 text-indigo-500" />
+                <span>Guardar Outfit</span>
+              </h3>
+              <span className="text-[10px] text-neutral-400 font-medium">
+                Sincronización con Lookbook
+              </span>
+            </div>
 
             {/* Name Input */}
             <div>
-              <label className="block text-[9px] mono text-white/40 mb-1">
-                LOOK_IDENTIFIER / NAME
+              <label className="block text-xs font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                Nombre del Look
               </label>
               <input
                 type="text"
                 value={outfitName}
                 onChange={(e) => setOutfitName(e.target.value)}
-                placeholder='e.g. "Look_01.blk"'
+                placeholder='Ej. "Look Noche Minimal"'
                 required
-                className={`w-full px-3 py-2 text-[11px] mono border focus:outline-none ${
+                className={`w-full px-3 py-2 text-xs rounded-xl border transition-all focus:outline-none ${
                   isDarkMode
-                    ? 'bg-[#151515] border-white/10 text-white focus:border-white/40'
-                    : 'bg-neutral-50 border-neutral-200 text-neutral-900 focus:border-neutral-900'
+                    ? 'bg-neutral-800 border-neutral-700 text-white focus:border-white'
+                    : 'bg-neutral-50 border-neutral-200 text-neutral-900 focus:border-black/40'
                 }`}
               />
             </div>
 
             {/* Occasion */}
             <div>
-              <label className="block text-[9px] mono text-white/40 mb-1">
-                OCCASION_TAG
+              <label className="block text-xs font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                Ocasión / Evento
               </label>
               <select
                 value={occasion}
                 onChange={(e) => setOccasion(e.target.value)}
-                className={`w-full px-3 py-2 text-[11px] mono border focus:outline-none ${
+                className={`w-full px-3 py-2 text-xs rounded-xl border transition-all focus:outline-none cursor-pointer ${
                   isDarkMode
-                    ? 'bg-[#151515] border-white/10 text-white focus:border-white/40'
-                    : 'bg-neutral-50 border-neutral-200 text-neutral-900 focus:border-neutral-900'
+                    ? 'bg-neutral-800 border-neutral-700 text-white focus:border-white'
+                    : 'bg-neutral-50 border-neutral-200 text-neutral-900 focus:border-black/40'
                 }`}
               >
-                <option value="Rave / Night Out">Rave / Night Out</option>
-                <option value="Diario / Streetwear">Diario / Streetwear</option>
-                <option value="Evento Editorial / Galería">Evento Editorial / Galería</option>
-                <option value="Casual Cyber Minimal">Casual Cyber Minimal</option>
-                <option value="Winter Layering">Winter Layering</option>
+                <option value="Fiesta / Noche">Fiesta / Noche</option>
+                <option value="Diario / Casual">Diario / Casual</option>
+                <option value="Oficina / Trabajo">Oficina / Trabajo</option>
+                <option value="Evento Formal">Evento Formal</option>
+                <option value="Viaje / Fin de semana">Viaje / Fin de semana</option>
               </select>
             </div>
 
             {/* Notes */}
             <div>
-              <label className="block text-[9px] mono text-white/40 mb-1">
-                ARCHIVAL_NOTES
+              <label className="block text-xs font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                Notas de Estilo (Opcional)
               </label>
               <textarea
                 rows={2}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="Layering specs, chain accessories..."
-                className={`w-full px-3 py-2 text-[11px] mono border focus:outline-none ${
+                placeholder="Añade notas sobre accesorios, peinado o clima..."
+                className={`w-full px-3 py-2 text-xs rounded-xl border transition-all focus:outline-none ${
                   isDarkMode
-                    ? 'bg-[#151515] border-white/10 text-white focus:border-white/40'
-                    : 'bg-neutral-50 border-neutral-200 text-neutral-900 focus:border-neutral-900'
+                    ? 'bg-neutral-800 border-neutral-700 text-white focus:border-white'
+                    : 'bg-neutral-50 border-neutral-200 text-neutral-900 focus:border-black/40'
                 }`}
               />
             </div>
@@ -456,10 +463,10 @@ export const StudioView: React.FC<StudioViewProps> = ({
             {/* Save Button */}
             <button
               type="submit"
-              className="w-full py-4 bg-white text-black mono text-xs font-bold tracking-widest hover:bg-neutral-200 transition-colors flex items-center justify-center space-x-2"
+              className="w-full py-3 bg-black text-white dark:bg-white dark:text-black rounded-xl text-xs font-semibold shadow-xs hover:opacity-90 transition-all flex items-center justify-center space-x-2 cursor-pointer"
             >
               <Save className="w-4 h-4" />
-              <span>SAVE OUTFIT</span>
+              <span>Guardar en Mi Lookbook</span>
             </button>
           </form>
         </div>
@@ -469,7 +476,7 @@ export const StudioView: React.FC<StudioViewProps> = ({
       {activePickerCategory && (
         <div
           onClick={() => setActivePickerCategory(null)}
-          className="fixed inset-0 z-50 bg-neutral-950/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fade-in"
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fade-in"
         >
           <div
             onClick={(e) => e.stopPropagation()}
@@ -480,37 +487,38 @@ export const StudioView: React.FC<StudioViewProps> = ({
             {/* Modal Header */}
             <div className="p-4 border-b flex items-center justify-between border-neutral-200 dark:border-neutral-800">
               <div>
-                <span className="text-[10px] font-mono uppercase text-neutral-400">
-                  SELECCIONAR PRENDA
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400 block">
+                  Seleccionar Prenda
                 </span>
-                <h3 className="font-bold text-sm uppercase font-sans">
+                <h3 className="font-semibold text-sm font-sans">
                   {activePickerCategory} ({pickerItems.length})
                 </h3>
               </div>
               <button
                 onClick={() => setActivePickerCategory(null)}
-                className="w-9 h-9 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-500 hover:text-black dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                className="w-8 h-8 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-500 hover:text-black dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
                 title="Cerrar"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Picker Content List */}
             <div className="p-4 overflow-y-auto space-y-3 flex-1">
               {pickerItems.length === 0 ? (
-                <div className="py-8 text-center space-y-3">
+                <div className="py-12 text-center space-y-3">
                   <p className="text-xs text-neutral-500">
-                    No tienes prendas registradas en la categoría {activePickerCategory}.
+                    No tienes prendas en la categoría {activePickerCategory}.
                   </p>
                   <button
                     onClick={() => {
                       setActivePickerCategory(null);
                       onNavigateToUpload();
                     }}
-                    className="px-4 py-2 bg-black text-white dark:bg-white dark:text-black rounded-full text-xs font-semibold shadow-sm hover:opacity-90"
+                    className="inline-flex items-center space-x-1.5 px-4 py-2 bg-black text-white dark:bg-white dark:text-black rounded-full text-xs font-semibold shadow-xs hover:opacity-90 transition-opacity cursor-pointer"
                   >
-                    + SUBIR PRENDA AHORA
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Agregar Prenda Ahora</span>
                   </button>
                 </div>
               ) : (
@@ -556,7 +564,7 @@ export const StudioView: React.FC<StudioViewProps> = ({
             <div className="p-3 border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/90">
               <button
                 onClick={() => setActivePickerCategory(null)}
-                className={`w-full py-2.5 rounded-full text-xs font-semibold border transition-colors ${
+                className={`w-full py-2.5 rounded-full text-xs font-semibold border transition-colors cursor-pointer ${
                   isDarkMode
                     ? 'border-neutral-800 text-neutral-300 hover:bg-neutral-800'
                     : 'border-neutral-200 text-neutral-700 hover:bg-neutral-200'

@@ -96,14 +96,13 @@ export const AiStylistView: React.FC<AiStylistViewProps> = ({ items, isDarkMode 
   return (
     <div className="max-w-3xl mx-auto space-y-4 pb-28">
       {/* Header */}
-      <div className="border-b pb-4 border-white/10 flex items-center justify-between">
+      <div className="border-b pb-4 border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
         <div>
-          <h2 className="text-2xl sm:text-3xl font-light tracking-tight font-sans flex items-center space-x-2">
-            <span>Asesor de</span>
-            <span className="text-white/30 font-serif italic">Estilo</span>
+          <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">
+            Asesor de <span className="font-serif italic text-neutral-500 font-normal">Estilo</span>
           </h2>
-          <p className="text-[10px] mono text-white/40 mt-1">
-            CONSULTAS DE MODA // PERSONAL_STYLE_CONSULTANT
+          <p className="text-xs text-neutral-500 mt-1">
+            Consulta combinaciones, etiqueta de vestimenta y consejos personalizados para tus {items.length} prendas.
           </p>
         </div>
       </div>
