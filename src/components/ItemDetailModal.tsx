@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ClothingItem } from '../types';
-import { X, Heart, Trash2, Calendar, Tag, ArrowRight, ShieldCheck, Wand2, RefreshCw } from 'lucide-react';
+import { X, Heart, Trash2, Calendar, Tag, ArrowRight, ShieldCheck, Wand2, RefreshCw, Sparkles } from 'lucide-react';
 import { removeBackgroundToWhite } from '../lib/imageProcessor';
 
 interface ItemDetailModalProps {
@@ -43,12 +43,25 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-fade-in">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-fade-in"
+    >
       <div
-        className={`w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col sm:flex-row border transition-all ${
+        onClick={(e) => e.stopPropagation()}
+        className={`relative w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col sm:flex-row border transition-all ${
           isDarkMode ? 'bg-neutral-900 border-neutral-800 text-white' : 'bg-white border-neutral-200 text-neutral-900'
         }`}
       >
+        {/* Always visible floating Close button (Essential for mobile) */}
+        <button
+          onClick={onClose}
+          aria-label="Cerrar modal"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 z-50 w-10 h-10 rounded-full bg-black/80 text-white dark:bg-white dark:text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-xl border border-white/20 cursor-pointer"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
         {/* Left Side: Garment Image on Clean Studio Background */}
         <div className="sm:w-1/2 aspect-[3/4] sm:aspect-auto relative overflow-hidden bg-white flex items-center justify-center p-6 border-b sm:border-b-0 sm:border-r border-neutral-200 dark:border-neutral-800">
           <img
@@ -96,38 +109,45 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
             </div>
 
             {/* Color & Date */}
-            <div className="flex items-center space-x-3 text-xs font-mono text-neutral-500 pt-1 border-t border-neutral-200 dark:border-neutral-800">
-              {item.color && <span>COLOR: <strong className="text-neutral-900 dark:text-white">{item.color}</strong></span>}
-              <span>•</span>
-              <span className="flex items-center space-x-1">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-500 pt-1 border-t border-neutral-200 dark:border-neutral-800">
+              <span className="px-2.5 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 text-[11px] font-medium">
+                {item.category}
+              </span>
+              {item.color && (
+                <span className="px-2.5 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 text-[11px] font-medium flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-current opacity-70" />
+                  <span>{item.color}</span>
+                </span>
+              )}
+              <span className="flex items-center space-x-1 text-[11px] text-neutral-400 ml-auto">
                 <Calendar className="w-3 h-3" />
                 <span>{new Date(item.createdAt).toLocaleDateString('es-ES')}</span>
               </span>
             </div>
           </div>
 
-          {/* Tags */}
-          {item.tags && item.tags.length > 0 && (
-            <div className="space-y-1">
-              <span className="text-[10px] font-mono text-neutral-500 uppercase">
-                ESTILO / TAGS:
-              </span>
-              <div className="flex flex-wrap gap-1.5">
-                {item.tags.map((t, idx) => (
-                  <span
-                    key={idx}
-                    className={`text-[10px] font-mono px-2 py-0.5 border ${
-                      isDarkMode
-                        ? 'border-neutral-800 bg-neutral-950 text-neutral-300'
-                        : 'border-neutral-200 bg-neutral-100 text-neutral-700'
-                    }`}
-                  >
-                    #{t}
-                  </span>
-                ))}
-              </div>
+          {/* Etiquetas Inteligentes AI */}
+          <div className="space-y-1.5 pt-2">
+            <div className="flex items-center space-x-1.5 text-xs font-semibold text-neutral-800 dark:text-neutral-200">
+              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+              <span>Etiquetas Inteligentes AI</span>
             </div>
-          )}
+            <div className="flex flex-wrap gap-1.5">
+              {((item.tags && item.tags.length > 0) ? item.tags : [item.category, item.color, 'Atemporal', 'Estilo'].filter(Boolean) as string[]).map((t, idx) => (
+                <span
+                  key={idx}
+                  className={`text-[11px] font-medium px-2.5 py-1 rounded-full border flex items-center space-x-1 transition-colors ${
+                    isDarkMode
+                      ? 'border-neutral-800 bg-neutral-900 text-neutral-200'
+                      : 'border-neutral-200 bg-neutral-100 text-neutral-800'
+                  }`}
+                >
+                  <Tag className="w-3 h-3 text-neutral-400" />
+                  <span>#{t}</span>
+                </span>
+              ))}
+            </div>
+          </div>
 
           {/* Notes */}
           {item.notes && (
@@ -180,6 +200,17 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
                 <Trash2 className="w-4 h-4" />
               </button>
             </div>
+
+            <button
+              onClick={onClose}
+              className={`w-full py-2.5 rounded-full text-xs font-medium border transition-colors ${
+                isDarkMode
+                  ? 'border-neutral-800 text-neutral-400 hover:text-white hover:bg-neutral-800'
+                  : 'border-neutral-200 text-neutral-600 hover:text-black hover:bg-neutral-100'
+              }`}
+            >
+              Volver al Armario
+            </button>
           </div>
         </div>
       </div>

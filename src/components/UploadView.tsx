@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Category, CATEGORIES, ClothingItem } from '../types';
-import { Camera, Upload, Sparkles, Check, RefreshCw, X, Image as ImageIcon, Wand2, Layers } from 'lucide-react';
+import { Camera, Upload, Sparkles, Check, RefreshCw, X, Image as ImageIcon, Wand2, Layers, ArrowLeft } from 'lucide-react';
 import { removeBackgroundToWhite } from '../lib/imageProcessor';
 
 interface UploadViewProps {
@@ -192,13 +192,32 @@ export const UploadView: React.FC<UploadViewProps> = ({
 
   return (
     <div className="max-w-2xl mx-auto space-y-6 pb-24">
+      {/* Top Mobile Back Navigation Header */}
+      <div className="flex items-center justify-between pb-3 border-b border-neutral-200 dark:border-neutral-800">
+        <button
+          type="button"
+          onClick={onCancel}
+          className={`flex items-center space-x-2 px-3.5 py-2 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
+            isDarkMode
+              ? 'bg-neutral-900 border-neutral-800 text-neutral-200 hover:text-white hover:bg-neutral-800'
+              : 'bg-neutral-100 border-neutral-200 text-neutral-800 hover:text-black hover:bg-neutral-200'
+          }`}
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Volver al Armario</span>
+        </button>
+        <span className="text-xs font-medium text-neutral-400">
+          Nueva Prenda
+        </span>
+      </div>
+
       {/* Title */}
-      <div className="border-b pb-4 border-white/10">
+      <div>
         <h2 className="text-2xl sm:text-3xl font-light tracking-tight font-sans">
-          Register <span className="text-white/30 font-serif italic">Item</span>
+          Registrar <span className="text-neutral-400 dark:text-white/40 font-serif italic">Prenda</span>
         </h2>
-        <p className="text-[10px] mono text-white/40 mt-1">
-          IMAGE_CAPTURE // AUTOMATIC GEMINI AI RECOGNITION
+        <p className="text-[10px] text-neutral-400 mt-1">
+          Reconocimiento automático con IA Gemini y Fondo Blanco Studio
         </p>
       </div>
 

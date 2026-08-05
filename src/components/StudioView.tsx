@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ClothingItem, Outfit, CATEGORIES, Category } from '../types';
-import { Sparkles, Shuffle, Save, X, Plus, ChevronRight, Check, Heart, HelpCircle } from 'lucide-react';
+import { Sparkles, Shuffle, Save, X, Plus, ChevronRight, Check, Heart, HelpCircle, User } from 'lucide-react';
+import { MannequinCanvas } from './MannequinCanvas';
 
 interface StudioViewProps {
   items: ClothingItem[];
@@ -52,8 +53,16 @@ export const StudioView: React.FC<StudioViewProps> = ({
     recommendedOccasion: string;
   } | null>(null);
 
-  // Layout mode (vertical vs horizontal)
-  const [layoutMode, setLayoutMode] = useState<'vertical' | 'horizontal'>('vertical');
+  // Layout mode (mannequin vs vertical vs horizontal)
+  const [layoutMode, setLayoutMode] = useState<'mannequin' | 'vertical' | 'horizontal'>('mannequin');
+
+  const handleRemoveCategory = (cat: Category) => {
+    if (cat === 'Tops') setSelectedTop(undefined);
+    if (cat === 'Bottoms') setSelectedBottom(undefined);
+    if (cat === 'Jackets') setSelectedJacket(undefined);
+    if (cat === 'Shoes') setSelectedShoes(undefined);
+    if (cat === 'Accessories') setSelectedAccessory(undefined);
+  };
 
   // Helper to randomize combination
   const handleRandomize = () => {
@@ -245,26 +254,40 @@ export const StudioView: React.FC<StudioViewProps> = ({
         {/* Left Column: Visual Outfit Canvas */}
         <div className="lg:col-span-7 space-y-3">
           <div className="flex items-center justify-between font-mono text-xs">
-            <span className="font-bold uppercase tracking-wider text-neutral-500">
-              VISTA EN VIVO SILUETA
+            <span className="font-semibold uppercase tracking-wider text-neutral-500 flex items-center gap-1.5">
+              <User className="w-3.5 h-3.5 text-indigo-500" />
+              <span>PROYECTOR DE VISTA Y SILUETA</span>
             </span>
-            <div className="flex space-x-1">
+            <div className="flex space-x-1 bg-neutral-100 dark:bg-neutral-800/80 p-0.5 rounded-full text-[10px]">
               <button
-                onClick={() => setLayoutMode('vertical')}
-                className={`px-2 py-0.5 text-[10px] border ${
-                  layoutMode === 'vertical'
-                    ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-bold'
-                    : 'text-neutral-500'
+                type="button"
+                onClick={() => setLayoutMode('mannequin')}
+                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer ${
+                  layoutMode === 'mannequin'
+                    ? 'bg-black text-white dark:bg-white dark:text-black font-semibold shadow-xs'
+                    : 'text-neutral-500 hover:text-black dark:hover:text-white'
                 }`}
               >
-                VERTICAL
+                👤 Maniquí
               </button>
               <button
+                type="button"
+                onClick={() => setLayoutMode('vertical')}
+                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer ${
+                  layoutMode === 'vertical'
+                    ? 'bg-black text-white dark:bg-white dark:text-black font-semibold shadow-xs'
+                    : 'text-neutral-500 hover:text-black dark:hover:text-white'
+                }`}
+              >
+                Vertical
+              </button>
+              <button
+                type="button"
                 onClick={() => setLayoutMode('horizontal')}
-                className={`px-2 py-0.5 text-[10px] border ${
+                className={`px-3 py-1 rounded-full font-medium transition-all cursor-pointer ${
                   layoutMode === 'horizontal'
-                    ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-bold'
-                    : 'text-neutral-500'
+                    ? 'bg-black text-white dark:bg-white dark:text-black font-semibold shadow-xs'
+                    : 'text-neutral-500 hover:text-black dark:hover:text-white'
                 }`}
               >
                 Mosaico
@@ -272,77 +295,90 @@ export const StudioView: React.FC<StudioViewProps> = ({
             </div>
           </div>
 
-          {/* Canvas Display */}
-          <div className={`p-4 rounded-2xl border transition-colors ${
-            isDarkMode ? 'bg-neutral-900/60 border-neutral-800' : 'bg-neutral-100/70 border-neutral-200'
-          }`}>
-            <div className={layoutMode === 'vertical' ? 'space-y-3 max-w-sm mx-auto' : 'grid grid-cols-2 gap-3'}>
-              {slots.map((slot) => {
-                const item = slot.item;
-                return (
-                  <div
-                    key={slot.id}
-                    onClick={() => setActivePickerCategory(slot.id)}
-                    className={`relative rounded-2xl border group cursor-pointer transition-all overflow-hidden flex items-center justify-between ${
-                      item
-                        ? isDarkMode
-                          ? 'bg-neutral-900 border-neutral-700 hover:border-white'
-                          : 'bg-white border-neutral-200 hover:border-black/30 shadow-xs'
-                        : isDarkMode
-                        ? 'bg-neutral-900/40 border-dashed border-neutral-800 hover:border-neutral-700'
-                        : 'bg-white/60 border-dashed border-neutral-300 hover:border-neutral-400'
-                    }`}
-                  >
-                    {/* Item Thumbnail & Details */}
-                    {item ? (
-                      <div className="flex items-center space-x-3 w-full p-2.5">
-                        <div className="w-16 h-20 bg-white rounded-xl flex-shrink-0 overflow-hidden border border-neutral-200 dark:border-white/10 p-1 flex items-center justify-center">
-                          <img
-                            src={item.imageUrl}
-                            alt={item.title}
-                            referrerPolicy="no-referrer"
-                            className="w-full h-full object-contain"
-                          />
+          {/* Canvas Display Mode */}
+          {layoutMode === 'mannequin' ? (
+            <MannequinCanvas
+              selectedTop={selectedTop}
+              selectedBottom={selectedBottom}
+              selectedJacket={selectedJacket}
+              selectedShoes={selectedShoes}
+              selectedAccessory={selectedAccessory}
+              onSelectCategory={(cat) => setActivePickerCategory(cat)}
+              onRemoveCategory={handleRemoveCategory}
+              isDarkMode={isDarkMode}
+            />
+          ) : (
+            <div className={`p-4 rounded-2xl border transition-colors ${
+              isDarkMode ? 'bg-neutral-900/60 border-neutral-800' : 'bg-neutral-100/70 border-neutral-200'
+            }`}>
+              <div className={layoutMode === 'vertical' ? 'space-y-3 max-w-sm mx-auto' : 'grid grid-cols-2 gap-3'}>
+                {slots.map((slot) => {
+                  const item = slot.item;
+                  return (
+                    <div
+                      key={slot.id}
+                      onClick={() => setActivePickerCategory(slot.id)}
+                      className={`relative rounded-2xl border group cursor-pointer transition-all overflow-hidden flex items-center justify-between ${
+                        item
+                          ? isDarkMode
+                            ? 'bg-neutral-900 border-neutral-700 hover:border-white'
+                            : 'bg-white border-neutral-200 hover:border-black/30 shadow-xs'
+                          : isDarkMode
+                          ? 'bg-neutral-900/40 border-dashed border-neutral-800 hover:border-neutral-700'
+                          : 'bg-white/60 border-dashed border-neutral-300 hover:border-neutral-400'
+                      }`}
+                    >
+                      {/* Item Thumbnail & Details */}
+                      {item ? (
+                        <div className="flex items-center space-x-3 w-full p-2.5">
+                          <div className="w-16 h-20 bg-white rounded-xl flex-shrink-0 overflow-hidden border border-neutral-200 dark:border-white/10 p-1 flex items-center justify-center">
+                            <img
+                              src={item.imageUrl}
+                              alt={item.title}
+                              referrerPolicy="no-referrer"
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0 pr-2">
+                            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200 uppercase tracking-wide">
+                              {slot.id}
+                            </span>
+                            <h4 className="font-semibold text-xs truncate mt-1.5">{item.brand || item.title}</h4>
+                            {item.color && (
+                              <p className="text-[10px] text-neutral-400 truncate">
+                                {item.color}
+                              </p>
+                            )}
+                          </div>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              slot.setter(undefined);
+                            }}
+                            className="p-1.5 rounded-full text-neutral-400 hover:text-rose-500 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+                            title="Remover slot"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
                         </div>
-                        <div className="flex-1 min-w-0 pr-2">
-                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200 uppercase tracking-wide">
-                            {slot.id}
-                          </span>
-                          <h4 className="font-semibold text-xs truncate mt-1.5">{item.brand || item.title}</h4>
-                          {item.color && (
-                            <p className="text-[10px] text-neutral-400 truncate">
-                              {item.color}
-                            </p>
-                          )}
+                      ) : (
+                        /* Empty Slot State */
+                        <div className="w-full p-4 flex items-center justify-between text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200">
+                          <div className="flex items-center space-x-2">
+                            <Plus className="w-4 h-4" />
+                            <span className="text-xs font-medium uppercase tracking-wider">
+                              Seleccionar {slot.label}
+                            </span>
+                          </div>
+                          <ChevronRight className="w-4 h-4 opacity-50 group-hover:translate-x-1 transition-transform" />
                         </div>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            slot.setter(undefined);
-                          }}
-                          className="p-1.5 rounded-full text-neutral-400 hover:text-rose-500 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
-                          title="Remover slot"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </div>
-                    ) : (
-                      /* Empty Slot State */
-                      <div className="w-full p-4 flex items-center justify-between text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200">
-                        <div className="flex items-center space-x-2">
-                          <Plus className="w-4 h-4" />
-                          <span className="text-xs font-medium uppercase tracking-wider">
-                            Seleccionar {slot.label}
-                          </span>
-                        </div>
-                        <ChevronRight className="w-4 h-4 opacity-50 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Right Column: Save Outfit Form */}
@@ -431,25 +467,30 @@ export const StudioView: React.FC<StudioViewProps> = ({
 
       {/* Category Item Picker Drawer/Modal */}
       {activePickerCategory && (
-        <div className="fixed inset-0 z-50 bg-neutral-950/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div
+          onClick={() => setActivePickerCategory(null)}
+          className="fixed inset-0 z-50 bg-neutral-950/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fade-in"
+        >
           <div
-            className={`w-full max-w-xl max-h-[80vh] flex flex-col border shadow-2xl overflow-hidden ${
+            onClick={(e) => e.stopPropagation()}
+            className={`w-full max-w-xl max-h-[85vh] flex flex-col border shadow-2xl overflow-hidden rounded-t-3xl sm:rounded-3xl transition-all ${
               isDarkMode ? 'bg-neutral-900 border-neutral-800 text-white' : 'bg-white border-neutral-200 text-neutral-900'
             }`}
           >
             {/* Modal Header */}
             <div className="p-4 border-b flex items-center justify-between border-neutral-200 dark:border-neutral-800">
               <div>
-                <span className="text-[10px] font-mono uppercase text-neutral-500">
+                <span className="text-[10px] font-mono uppercase text-neutral-400">
                   SELECCIONAR PRENDA
                 </span>
-                <h3 className="font-black text-sm uppercase font-sans">
+                <h3 className="font-bold text-sm uppercase font-sans">
                   {activePickerCategory} ({pickerItems.length})
                 </h3>
               </div>
               <button
                 onClick={() => setActivePickerCategory(null)}
-                className="p-1 text-neutral-400 hover:text-white"
+                className="w-9 h-9 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-500 hover:text-black dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                title="Cerrar"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -459,7 +500,7 @@ export const StudioView: React.FC<StudioViewProps> = ({
             <div className="p-4 overflow-y-auto space-y-3 flex-1">
               {pickerItems.length === 0 ? (
                 <div className="py-8 text-center space-y-3">
-                  <p className="text-xs font-mono text-neutral-500">
+                  <p className="text-xs text-neutral-500">
                     No tienes prendas registradas en la categoría {activePickerCategory}.
                   </p>
                   <button
@@ -467,7 +508,7 @@ export const StudioView: React.FC<StudioViewProps> = ({
                       setActivePickerCategory(null);
                       onNavigateToUpload();
                     }}
-                    className="px-4 py-2 bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-mono text-xs font-bold"
+                    className="px-4 py-2 bg-black text-white dark:bg-white dark:text-black rounded-full text-xs font-semibold shadow-sm hover:opacity-90"
                   >
                     + SUBIR PRENDA AHORA
                   </button>
@@ -483,24 +524,24 @@ export const StudioView: React.FC<StudioViewProps> = ({
                         setActivePickerCategory(null);
                         setVibeResult(null);
                       }}
-                      className={`group border cursor-pointer overflow-hidden transition-all ${
+                      className={`group border cursor-pointer rounded-2xl overflow-hidden transition-all ${
                         isDarkMode
                           ? 'bg-neutral-950 border-neutral-800 hover:border-white'
-                          : 'bg-neutral-50 border-neutral-200 hover:border-neutral-900'
+                          : 'bg-neutral-50 border-neutral-200 hover:border-black/30'
                       }`}
                     >
-                      <div className="aspect-[3/4] overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+                      <div className="aspect-[3/4] overflow-hidden bg-white p-2 flex items-center justify-center">
                         <img
                           src={item.imageUrl}
                           alt={item.title}
                           referrerPolicy="no-referrer"
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                          className="w-full h-full object-contain group-hover:scale-105 transition-transform"
                         />
                       </div>
-                      <div className="p-2">
-                        <h4 className="font-bold text-xs truncate">{item.title}</h4>
+                      <div className="p-2.5">
+                        <h4 className="font-semibold text-xs truncate">{item.brand || item.title}</h4>
                         {item.color && (
-                          <p className="text-[10px] font-mono text-neutral-500 truncate">
+                          <p className="text-[10px] text-neutral-400 truncate">
                             {item.color}
                           </p>
                         )}
@@ -509,6 +550,20 @@ export const StudioView: React.FC<StudioViewProps> = ({
                   ))}
                 </div>
               )}
+            </div>
+
+            {/* Bottom Close Button for Mobile */}
+            <div className="p-3 border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/90">
+              <button
+                onClick={() => setActivePickerCategory(null)}
+                className={`w-full py-2.5 rounded-full text-xs font-semibold border transition-colors ${
+                  isDarkMode
+                    ? 'border-neutral-800 text-neutral-300 hover:bg-neutral-800'
+                    : 'border-neutral-200 text-neutral-700 hover:bg-neutral-200'
+                }`}
+              >
+                Volver
+              </button>
             </div>
           </div>
         </div>

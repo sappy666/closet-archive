@@ -110,8 +110,8 @@ export const AiStylistView: React.FC<AiStylistViewProps> = ({ items, isDarkMode 
 
       {/* Chat Messages Container */}
       <div
-        className={`p-4 border-tech min-h-[380px] max-h-[500px] overflow-y-auto space-y-4 ${
-          isDarkMode ? 'bg-[#0D0D0D]' : 'bg-neutral-50 border-neutral-200'
+        className={`p-4 rounded-3xl border min-h-[380px] max-h-[500px] overflow-y-auto space-y-4 shadow-xs ${
+          isDarkMode ? 'bg-neutral-900/80 border-neutral-800' : 'bg-neutral-50 border-neutral-200'
         }`}
       >
         {messages.map((msg) => {
@@ -122,28 +122,28 @@ export const AiStylistView: React.FC<AiStylistViewProps> = ({ items, isDarkMode 
               className={`flex space-x-3 ${isUser ? 'justify-end' : 'justify-start'}`}
             >
               {!isUser && (
-                <div className="w-7 h-7 bg-white text-black font-mono text-xs font-bold flex items-center justify-center flex-shrink-0">
-                  SE
+                <div className="w-7 h-7 bg-black text-white dark:bg-white dark:text-black rounded-full font-semibold text-xs flex items-center justify-center flex-shrink-0 shadow-xs">
+                  AI
                 </div>
               )}
 
               <div
-                className={`max-w-[85%] p-3.5 border text-xs font-mono leading-relaxed ${
+                className={`max-w-[85%] p-3.5 rounded-2xl text-xs leading-relaxed ${
                   isUser
-                    ? 'bg-white text-black border-white'
+                    ? 'bg-black text-white dark:bg-white dark:text-black font-medium'
                     : isDarkMode
-                    ? 'bg-[#151515] border-white/10 text-neutral-200'
-                    : 'bg-white border-neutral-200 text-neutral-800'
+                    ? 'bg-neutral-800 text-neutral-200 border border-neutral-700/50'
+                    : 'bg-white border border-neutral-200 text-neutral-800 shadow-xs'
                 }`}
               >
                 <p className="whitespace-pre-line font-sans">{msg.text}</p>
-                <span className="text-[9px] text-neutral-500 block text-right mt-1.5 font-mono">
+                <span className="text-[9px] text-neutral-400 block text-right mt-1.5 font-medium">
                   {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
 
               {isUser && (
-                <div className="w-7 h-7 bg-white/20 text-white font-mono text-xs font-bold flex items-center justify-center flex-shrink-0">
+                <div className="w-7 h-7 bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-white rounded-full text-xs flex items-center justify-center flex-shrink-0">
                   <User className="w-4 h-4" />
                 </div>
               )}
@@ -152,9 +152,9 @@ export const AiStylistView: React.FC<AiStylistViewProps> = ({ items, isDarkMode 
         })}
 
         {isLoading && (
-          <div className="flex items-center space-x-2 text-xs font-mono text-white/40">
-            <RefreshCw className="w-4 h-4 animate-spin text-white" />
-            <span>STYLIST @sappy.error PROCESSING QUERY...</span>
+          <div className="flex items-center space-x-2 text-xs font-medium text-neutral-400">
+            <RefreshCw className="w-4 h-4 animate-spin text-black dark:text-white" />
+            <span>Asesor de Estilo pensando respuesta...</span>
           </div>
         )}
 
@@ -163,9 +163,9 @@ export const AiStylistView: React.FC<AiStylistViewProps> = ({ items, isDarkMode 
 
       {/* Suggested Quick Prompts */}
       <div className="space-y-2">
-        <div className="flex items-center space-x-1.5 text-[10px] font-mono text-neutral-500">
-          <Lightbulb className="w-3.5 h-3.5" />
-          <span>SUGERENCIAS DE CONSULTA RÁPIDA:</span>
+        <div className="flex items-center space-x-1.5 text-xs font-medium text-neutral-400">
+          <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
+          <span>Sugerencias de consulta rápida:</span>
         </div>
         <div className="flex flex-wrap gap-2">
           {samplePrompts.map((p, idx) => (
@@ -174,10 +174,10 @@ export const AiStylistView: React.FC<AiStylistViewProps> = ({ items, isDarkMode 
               onClick={() => {
                 setInputMessage(p);
               }}
-              className={`text-[11px] font-mono px-2.5 py-1 border transition-colors ${
+              className={`text-xs px-3 py-1.5 rounded-full border transition-all duration-200 cursor-pointer ${
                 isDarkMode
-                  ? 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:text-white'
-                  : 'bg-white border-neutral-200 text-neutral-600 hover:text-neutral-900'
+                  ? 'bg-neutral-900 border-neutral-800 text-neutral-300 hover:bg-neutral-800 hover:text-white hover:border-neutral-700'
+                  : 'bg-white border-neutral-200 text-neutral-700 hover:bg-neutral-100 hover:text-black hover:border-neutral-300'
               }`}
             >
               "{p}"
@@ -193,19 +193,19 @@ export const AiStylistView: React.FC<AiStylistViewProps> = ({ items, isDarkMode 
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
           placeholder="Escribe tu consulta de estilo o evento..."
-          className={`flex-1 px-4 py-3 text-xs font-mono border focus:outline-none ${
+          className={`flex-1 px-4 py-3 text-xs rounded-full border transition-all focus:outline-none ${
             isDarkMode
-              ? 'bg-neutral-900 border-neutral-800 text-white focus:border-white'
-              : 'bg-white border-neutral-200 text-neutral-900 focus:border-neutral-900'
+              ? 'bg-neutral-900 border-neutral-800 text-white placeholder-neutral-500 focus:border-white/30'
+              : 'bg-neutral-100 border-neutral-200 text-neutral-900 placeholder-neutral-400 focus:border-black/30'
           }`}
         />
         <button
           type="submit"
           disabled={!inputMessage.trim() || isLoading}
-          className="px-5 py-3 bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-mono font-bold text-xs uppercase tracking-wider disabled:opacity-50 hover:opacity-90 transition-opacity flex items-center space-x-1"
+          className="px-5 py-3 bg-black text-white dark:bg-white dark:text-black rounded-full font-semibold text-xs tracking-wide disabled:opacity-40 hover:opacity-90 transition-opacity flex items-center space-x-1.5 shadow-sm cursor-pointer"
         >
           <Send className="w-4 h-4" />
-          <span className="hidden sm:inline">ENVIAR</span>
+          <span className="hidden sm:inline">Enviar</span>
         </button>
       </form>
     </div>
