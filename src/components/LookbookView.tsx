@@ -203,7 +203,7 @@ export const LookbookView: React.FC<LookbookViewProps> = ({
                   <div className="p-3 bg-neutral-950/40 border border-neutral-800 font-mono text-[11px] text-neutral-300 space-y-1">
                     <div className="flex items-center space-x-1 text-indigo-400 font-bold text-[10px]">
                       <Sparkles className="w-3 h-3" />
-                      <span>{outfit.aiVibeRating.title || 'VIBE CHECK RESULT'}</span>
+                      <span>{outfit.aiVibeRating.title || 'EVALUACIÓN DE ESTILO'}</span>
                     </div>
                     <p className="text-neutral-400 font-sans text-xs">{outfit.aiVibeRating.comment}</p>
                   </div>

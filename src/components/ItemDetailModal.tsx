@@ -94,7 +94,7 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
             <div className="flex items-start justify-between">
               <div>
                 <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest block">
-                  {item.brand || '@sappy.error'}
+                  PRENDA SELECCIONADA
                 </span>
                 <h3 className="font-extrabold text-lg tracking-tight uppercase font-sans">
                   {item.title}
@@ -126,11 +126,11 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
             </div>
           </div>
 
-          {/* Etiquetas Inteligentes AI */}
+          {/* Etiquetas Automáticas */}
           <div className="space-y-1.5 pt-2">
             <div className="flex items-center space-x-1.5 text-xs font-semibold text-neutral-800 dark:text-neutral-200">
               <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-              <span>Etiquetas Inteligentes AI</span>
+              <span>Etiquetas Automáticas</span>
             </div>
             <div className="flex flex-wrap gap-1.5">
               {((item.tags && item.tags.length > 0) ? item.tags : [item.category, item.color, 'Atemporal', 'Estilo'].filter(Boolean) as string[]).map((t, idx) => (

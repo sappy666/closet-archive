@@ -19,7 +19,7 @@ export const AiStylistView: React.FC<AiStylistViewProps> = ({ items, isDarkMode 
     {
       id: 'welcome',
       sender: 'assistant',
-      text: `¡Hola! Soy tu Asesor de Estilo Oficial @sappy.error. Tengo acceso a las ${items.length} prendas registradas en tu armario digital. ¿Para qué evento o vibra necesitas un outfit hoy?`,
+      text: `¡Hola! Soy tu Asesor de Estilo Personal. Tengo acceso a las ${items.length} prendas registradas en tu armario digital. ¿Para qué evento o vibra necesitas un outfit hoy?`,
       timestamp: new Date()
     }
   ]);
@@ -99,11 +99,11 @@ export const AiStylistView: React.FC<AiStylistViewProps> = ({ items, isDarkMode 
       <div className="border-b pb-4 border-white/10 flex items-center justify-between">
         <div>
           <h2 className="text-2xl sm:text-3xl font-light tracking-tight font-sans flex items-center space-x-2">
-            <span>AI</span>
-            <span className="text-white/30 font-serif italic">Stylist</span>
+            <span>Asesor de</span>
+            <span className="text-white/30 font-serif italic">Estilo</span>
           </h2>
           <p className="text-[10px] mono text-white/40 mt-1">
-            GEMINI_INTELLIGENCE // PERSONAL_STYLE_CONSULTANT
+            CONSULTAS DE MODA // PERSONAL_STYLE_CONSULTANT
           </p>
         </div>
       </div>
@@ -122,8 +122,8 @@ export const AiStylistView: React.FC<AiStylistViewProps> = ({ items, isDarkMode 
               className={`flex space-x-3 ${isUser ? 'justify-end' : 'justify-start'}`}
             >
               {!isUser && (
-                <div className="w-7 h-7 bg-black text-white dark:bg-white dark:text-black rounded-full font-semibold text-xs flex items-center justify-center flex-shrink-0 shadow-xs">
-                  AI
+                <div className="w-7 h-7 bg-black text-white dark:bg-white dark:text-black rounded-full text-xs flex items-center justify-center flex-shrink-0 shadow-xs">
+                  <Sparkles className="w-3.5 h-3.5" />
                 </div>
               )}
 

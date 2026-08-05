@@ -39,7 +39,7 @@ export const StudioView: React.FC<StudioViewProps> = ({
   const [activePickerCategory, setActivePickerCategory] = useState<Category | null>(null);
 
   // Outfit metadata form
-  const [outfitName, setOutfitName] = useState(`Look ${Math.floor(Math.random() * 90 + 10)} @sappy.error`);
+  const [outfitName, setOutfitName] = useState(`Look ${Math.floor(Math.random() * 90 + 10)}`);
   const [occasion, setOccasion] = useState('Rave / Night Out');
   const [notes, setNotes] = useState('');
 
@@ -137,7 +137,7 @@ export const StudioView: React.FC<StudioViewProps> = ({
 
     const newOutfit: Outfit = {
       id: `outfit-${Date.now()}`,
-      name: outfitName || 'Look @sappy.error',
+      name: outfitName || 'Look 01',
       createdAt: Date.now(),
       items: {
         top: selectedTop,
@@ -205,10 +205,10 @@ export const StudioView: React.FC<StudioViewProps> = ({
             onClick={handleRunVibeCheck}
             disabled={isVibeChecking}
             className="px-3 py-1.5 bg-white text-black font-mono font-bold text-[10px] flex items-center space-x-1.5 hover:bg-neutral-200 transition-colors disabled:opacity-50"
-            title="Evaluar combinación con IA"
+            title="Evaluar combinación de prendas"
           >
             <Sparkles className={`w-3.5 h-3.5 ${isVibeChecking ? 'animate-spin' : ''}`} />
-            <span>AI VIBE CHECK</span>
+            <span>EVALUAR ESTILO</span>
           </button>
 
           <button
@@ -223,14 +223,14 @@ export const StudioView: React.FC<StudioViewProps> = ({
         </div>
       </div>
 
-      {/* AI Vibe Check Result Card */}
+      {/* Style Assessment Result Card */}
       {vibeResult && (
         <div className="p-4 bg-gradient-to-r from-indigo-900/30 to-purple-900/30 border border-indigo-500/40 space-y-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Sparkles className="w-4 h-4 text-indigo-400" />
               <span className="font-mono text-xs font-bold text-indigo-300 uppercase">
-                VEREDICTO @sappy.error STYLIST
+                VEREDICTO DE ESTILO
               </span>
             </div>
             <span className="px-2 py-0.5 bg-indigo-500 text-white font-mono text-xs font-extrabold">
@@ -343,7 +343,7 @@ export const StudioView: React.FC<StudioViewProps> = ({
                             <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200 uppercase tracking-wide">
                               {slot.id}
                             </span>
-                            <h4 className="font-semibold text-xs truncate mt-1.5">{item.brand || item.title}</h4>
+                            <h4 className="font-semibold text-xs truncate mt-1.5">{item.title}</h4>
                             {item.color && (
                               <p className="text-[10px] text-neutral-400 truncate">
                                 {item.color}
@@ -539,7 +539,7 @@ export const StudioView: React.FC<StudioViewProps> = ({
                         />
                       </div>
                       <div className="p-2.5">
-                        <h4 className="font-semibold text-xs truncate">{item.brand || item.title}</h4>
+                        <h4 className="font-semibold text-xs truncate">{item.title}</h4>
                         {item.color && (
                           <p className="text-[10px] text-neutral-400 truncate">
                             {item.color}

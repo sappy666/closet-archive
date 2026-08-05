@@ -33,7 +33,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center space-x-3">
           <div className="flex flex-col">
             <h1 className="text-base sm:text-lg font-semibold tracking-tight leading-none">
-              Mi Closet <span className="font-normal text-neutral-400 text-xs">@sappy.error</span>
+              Mi Closet Studio
             </h1>
             <span className="text-[10px] text-neutral-500 font-medium mt-0.5">
               {itemCount} prendas · {outfitCount} looks

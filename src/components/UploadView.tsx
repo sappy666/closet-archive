@@ -18,7 +18,7 @@ export const UploadView: React.FC<UploadViewProps> = ({
   const [category, setCategory] = useState<Category>('Tops');
   const [title, setTitle] = useState('');
   const [color, setColor] = useState('');
-  const [brand, setBrand] = useState('@sappy.error');
+  const [brand, setBrand] = useState('');
   const [tagsInput, setTagsInput] = useState('Y2K, Streetwear, Minimal');
   const [notes, setNotes] = useState('');
 
@@ -152,7 +152,7 @@ export const UploadView: React.FC<UploadViewProps> = ({
         }
         if (data.notes) setNotes(data.notes);
 
-        setAiSuccessMsg('IA detectó la prenda y completó los datos automáticamente.');
+        setAiSuccessMsg('Reconocimiento automático completó los datos de la prenda.');
       }
     } catch (err) {
       console.warn('Failed AI analysis call:', err);
@@ -176,12 +176,12 @@ export const UploadView: React.FC<UploadViewProps> = ({
 
     const newItem: ClothingItem = {
       id: `item-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
-      title: title || `Prenda ${category} @sappy.error`,
+      title: title || `Prenda ${category}`,
       category,
       imageUrl: imageSrc,
       color: color || 'Indefinido',
-      brand: brand || '@sappy.error',
-      tags: tags.length > 0 ? tags : ['Streetwear', 'Y2K'],
+      brand: brand || undefined,
+      tags: tags.length > 0 ? tags : ['Atemporal', 'Minimal'],
       notes: notes || '',
       isFavorite: false,
       createdAt: Date.now()
@@ -217,7 +217,7 @@ export const UploadView: React.FC<UploadViewProps> = ({
           Registrar <span className="text-neutral-400 dark:text-white/40 font-serif italic">Prenda</span>
         </h2>
         <p className="text-[10px] text-neutral-400 mt-1">
-          Reconocimiento automático con IA Gemini y Fondo Blanco Studio
+          Reconocimiento automático y Fondo Blanco Studio
         </p>
       </div>
 
@@ -289,7 +289,7 @@ export const UploadView: React.FC<UploadViewProps> = ({
                 <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center text-white p-4 text-center z-20">
                   <RefreshCw className="w-6 h-6 animate-spin mb-2 text-white" />
                   <p className="mono text-xs font-bold uppercase">
-                    GEMINI AI ANALIZANDO FOTO...
+                    ANALIZANDO PRENDA AUTOMÁTICAMENTE...
                   </p>
                   <p className="text-[10px] mono text-white/50 mt-1">
                     Detectando categoría, color y estilo
@@ -456,10 +456,10 @@ export const UploadView: React.FC<UploadViewProps> = ({
                   onClick={() => analyzeImageWithAI(imageSrc)}
                   disabled={isAnalyzing}
                   className="text-xs text-neutral-800 dark:text-neutral-200 hover:opacity-80 flex items-center gap-1 font-medium disabled:opacity-50"
-                  title="Pedir a Gemini que vuelva a analizar y sugiera un nombre descriptivo en español"
+                  title="Sugerir nombre automático según categoría y color"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                  <span>Sugerir Nombre IA (Español)</span>
+                  <span>Sugerir Nombre Automático</span>
                 </button>
               )}
             </div>
@@ -506,7 +506,7 @@ export const UploadView: React.FC<UploadViewProps> = ({
                 type="text"
                 value={brand}
                 onChange={(e) => setBrand(e.target.value)}
-                placeholder="Ej. @sappy.error"
+                placeholder="Ej. Marca u Opcional"
                 className={`w-full px-3 py-2 text-xs font-mono border focus:outline-none focus:ring-1 ${
                   isDarkMode
                     ? 'bg-neutral-900 border-neutral-800 text-white focus:border-white'

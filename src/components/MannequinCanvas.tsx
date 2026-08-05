@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ClothingItem, Category } from '../types';
-import { Plus, X, Sparkles, User, Layers, RefreshCw, Shirt } from 'lucide-react';
+import { Plus, X, Sparkles, User } from 'lucide-react';
 
 interface MannequinCanvasProps {
   selectedTop?: ClothingItem;
@@ -23,7 +23,7 @@ export const MannequinCanvas: React.FC<MannequinCanvasProps> = ({
   onRemoveCategory,
   isDarkMode,
 }) => {
-  const [silhouetteType, setSilhouetteType] = useState<'minimal' | 'female' | 'male'>('minimal');
+  const [modelPose, setModelPose] = useState<'runway' | 'editorial'>('runway');
 
   // Count equipped items
   const equippedCount = [selectedTop, selectedBottom, selectedJacket, selectedShoes, selectedAccessory].filter(Boolean).length;
@@ -37,112 +37,174 @@ export const MannequinCanvas: React.FC<MannequinCanvasProps> = ({
         <div className="flex items-center space-x-2">
           <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse" />
           <h3 className="font-semibold text-xs sm:text-sm tracking-wide flex items-center gap-1.5">
-            <span>Maniquí Virtual Studio</span>
-            <span className="px-2 py-0.5 text-[10px] font-mono rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">
+            <span>Maniquí Blanco Studio</span>
+            <span className="px-2 py-0.5 text-[10px] font-mono rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 font-semibold">
               {equippedCount}/5 Prendas
             </span>
           </h3>
         </div>
 
-        {/* Silhouette type selector */}
+        {/* Pose selector */}
         <div className="flex items-center space-x-1 bg-neutral-100 dark:bg-neutral-800 p-1 rounded-full text-[11px] font-medium">
           <button
             type="button"
-            onClick={() => setSilhouetteType('minimal')}
-            className={`px-2.5 py-1 rounded-full transition-all cursor-pointer ${
-              silhouetteType === 'minimal'
+            onClick={() => setModelPose('runway')}
+            className={`px-3 py-1 rounded-full transition-all cursor-pointer ${
+              modelPose === 'runway'
                 ? 'bg-black text-white dark:bg-white dark:text-black shadow-xs font-semibold'
                 : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
             }`}
           >
-            Minimal
+            Pasarela
           </button>
           <button
             type="button"
-            onClick={() => setSilhouetteType('female')}
-            className={`px-2.5 py-1 rounded-full transition-all cursor-pointer ${
-              silhouetteType === 'female'
+            onClick={() => setModelPose('editorial')}
+            className={`px-3 py-1 rounded-full transition-all cursor-pointer ${
+              modelPose === 'editorial'
                 ? 'bg-black text-white dark:bg-white dark:text-black shadow-xs font-semibold'
                 : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
             }`}
           >
-            Femenina
-          </button>
-          <button
-            type="button"
-            onClick={() => setSilhouetteType('male')}
-            className={`px-2.5 py-1 rounded-full transition-all cursor-pointer ${
-              silhouetteType === 'male'
-                ? 'bg-black text-white dark:bg-white dark:text-black shadow-xs font-semibold'
-                : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'
-            }`}
-          >
-            Masculina
+            Editorial
           </button>
         </div>
       </div>
 
       {/* Main Interactive Mannequin Stage */}
-      <div className="relative w-full max-w-sm mx-auto min-h-[520px] rounded-2xl bg-gradient-to-b from-neutral-50 via-neutral-100/50 to-neutral-200/40 dark:from-neutral-950 dark:via-neutral-900/60 dark:to-neutral-950 border border-neutral-200 dark:border-neutral-800 p-4 flex flex-col items-center justify-between overflow-hidden shadow-inner">
+      <div className="relative w-full max-w-md mx-auto min-h-[560px] rounded-2xl bg-gradient-to-b from-white via-neutral-50 to-neutral-100/80 dark:from-neutral-950 dark:via-neutral-900/90 dark:to-neutral-950 border border-neutral-200 dark:border-neutral-800 p-4 flex flex-col items-center justify-between overflow-hidden shadow-inner">
         
-        {/* Background Vector Body Silhouette SVG */}
-        <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-15 dark:opacity-20 p-6">
+        {/* Full-length White Glossy Mannequin SVG Render (matching Image 2) */}
+        <div className="absolute inset-0 pointer-events-none flex items-center justify-center p-2 opacity-80 dark:opacity-60">
           <svg
-            viewBox="0 0 100 240"
-            className="h-full w-auto stroke-current text-neutral-900 dark:text-white fill-none stroke-[1.2]"
+            viewBox="0 0 200 450"
+            className="h-full w-auto filter drop-shadow-xl"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            {/* Head */}
-            <circle cx="50" cy="22" r="12" />
-            {/* Neck */}
-            <path d="M47 34 L47 40 M53 34 L53 40" />
-            
-            {silhouetteType === 'female' ? (
-              <>
-                {/* Shoulders & Bust */}
-                <path d="M50 40 C35 42, 28 48, 28 65 C28 85, 38 95, 42 110 C46 125, 42 140, 38 185 L44 220 M50 40 C65 42, 72 48, 72 65 C72 85, 62 95, 58 110 C54 125, 58 140, 62 185 L56 220" />
-                <path d="M44 220 L40 235 M56 220 L60 235" />
-              </>
-            ) : silhouetteType === 'male' ? (
-              <>
-                {/* Broad Shoulders & Straight Torso */}
-                <path d="M50 40 C30 42, 22 46, 22 70 L26 120 L32 185 L38 220 M50 40 C70 42, 78 46, 78 70 L74 120 L68 185 L62 220" />
-                <path d="M38 220 L35 235 M62 220 L65 235" />
-              </>
-            ) : (
-              <>
-                {/* Minimalist Fashion Dummy */}
-                <path d="M50 40 L28 50 L32 115 L40 180 L42 220 M50 40 L72 50 L68 115 L60 180 L58 220" />
-                {/* Stand Pole */}
-                <line x1="50" y1="220" x2="50" y2="238" strokeDasharray="2 2" />
-                <line x1="35" y1="238" x2="65" y2="238" strokeWidth="2" />
-              </>
-            )}
+            <defs>
+              {/* Glossy White Gradient */}
+              <linearGradient id="whiteGloss" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#ffffff" />
+                <stop offset="45%" stopColor="#f3f4f6" />
+                <stop offset="85%" stopColor="#e5e7eb" />
+                <stop offset="100%" stopColor="#d1d5db" />
+              </linearGradient>
+              <linearGradient id="glossHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
+                <stop offset="100%" stopColor="#ffffff" stopOpacity="0.1" />
+              </linearGradient>
+              {/* Studio Ground Shadow */}
+              <radialGradient id="groundShadow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#000000" stopOpacity="0.25" />
+                <stop offset="100%" stopColor="#000000" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+
+            {/* Floor Oval Shadow */}
+            <ellipse cx="100" cy="425" rx="45" ry="8" fill="url(#groundShadow)" />
+
+            {/* Glossy White Full Body Silhouette */}
+            <g id="mannequinBody">
+              {/* Oval Smooth Head */}
+              <path
+                d="M100 25 C112 25 120 35 120 52 C120 68 112 78 100 78 C88 78 80 68 80 52 C80 35 88 25 100 25 Z"
+                fill="url(#whiteGloss)"
+                stroke="#e5e7eb"
+                strokeWidth="1"
+              />
+              {/* Head Gloss Reflection */}
+              <path
+                d="M96 30 C106 30 112 36 112 48 C108 38 100 34 94 36 Z"
+                fill="url(#glossHighlight)"
+              />
+
+              {/* Neck */}
+              <path d="M94 75 L94 88 C94 90 106 90 106 88 L106 75 Z" fill="url(#whiteGloss)" />
+
+              {/* Shoulders, Bust, Ribcage & Torso */}
+              <path
+                d="M100 88 
+                   C75 92 62 102 62 125 
+                   C62 142 70 155 76 172 
+                   C82 188 80 205 76 225 
+                   L124 225 
+                   C120 205 118 188 124 172 
+                   C130 155 138 142 138 125 
+                   C138 102 125 92 100 88 Z"
+                fill="url(#whiteGloss)"
+                stroke="#d1d5db"
+                strokeWidth="0.8"
+              />
+
+              {/* Torso Gloss Highlights */}
+              <path
+                d="M85 96 C70 105 68 125 72 145 C76 130 80 110 92 102 Z"
+                fill="url(#glossHighlight)"
+              />
+
+              {/* Hips & Pelvis */}
+              <path
+                d="M76 220 C72 238 70 255 78 275 L122 275 C130 255 128 238 124 220 Z"
+                fill="url(#whiteGloss)"
+                stroke="#d1d5db"
+                strokeWidth="0.8"
+              />
+
+              {/* Left Leg (Walking Pose Forward like Image 2) */}
+              <path
+                d="M80 270 C76 300 78 335 82 365 C84 385 86 405 88 420 L94 420 C92 400 90 380 88 355 C88 330 90 300 96 270 Z"
+                fill="url(#whiteGloss)"
+                stroke="#d1d5db"
+                strokeWidth="0.8"
+              />
+
+              {/* Right Leg (Slightly behind in stride) */}
+              <path
+                d="M104 270 C110 300 112 330 112 355 C112 375 110 395 108 415 L114 415 C118 395 120 375 118 350 C116 325 118 295 120 270 Z"
+                fill="url(#whiteGloss)"
+                stroke="#cbd5e1"
+                strokeWidth="0.8"
+              />
+
+              {/* Left Arm (Elegant relaxed posture) */}
+              <path
+                d="M62 105 C54 125 50 150 48 175 C47 195 48 215 52 230 L56 228 C53 212 52 195 53 172 C55 150 60 128 66 110 Z"
+                fill="url(#whiteGloss)"
+              />
+
+              {/* Right Arm */}
+              <path
+                d="M138 105 C146 125 150 150 152 175 C153 195 152 215 148 230 L144 228 C147 212 148 195 147 172 C145 150 140 128 134 110 Z"
+                fill="url(#whiteGloss)"
+              />
+            </g>
           </svg>
         </div>
 
-        {/* Mannequin Layers Stack */}
+        {/* Interactive Clothing Overlay Stack */}
         <div className="relative z-10 w-full space-y-3 my-auto flex flex-col items-center">
           
-          {/* Layer 1: Accessories (Head / Neck level) */}
+          {/* Layer 1: Accessories */}
           <div className="w-full flex justify-center">
             {selectedAccessory ? (
-              <div className="relative group bg-white rounded-xl p-2 border border-neutral-200 dark:border-white/10 shadow-md transition-all hover:scale-105 max-w-[150px] flex items-center space-x-2">
+              <div className="relative group bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md rounded-xl p-2 border border-neutral-200 dark:border-white/10 shadow-lg transition-all hover:scale-105 max-w-[170px] flex items-center space-x-2">
                 <img
                   src={selectedAccessory.imageUrl}
                   alt={selectedAccessory.title}
                   referrerPolicy="no-referrer"
-                  className="w-12 h-12 object-contain rounded-md bg-neutral-50"
+                  className="w-11 h-11 object-contain rounded-md bg-white p-0.5"
                 />
                 <div className="flex-1 min-w-0 text-left">
-                  <span className="text-[9px] font-bold uppercase text-indigo-600 dark:text-indigo-400 block">Acceso.</span>
-                  <p className="text-[10px] font-medium truncate text-neutral-800 dark:text-neutral-200">
-                    {selectedAccessory.brand || selectedAccessory.title}
+                  <span className="text-[9px] font-bold uppercase text-indigo-600 dark:text-indigo-400 block">Accesorio</span>
+                  <p className="text-[10px] font-semibold truncate text-neutral-800 dark:text-neutral-200">
+                    {selectedAccessory.title}
                   </p>
                 </div>
                 <button
                   onClick={() => onRemoveCategory('Accessories')}
                   className="p-1 text-neutral-400 hover:text-rose-500 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
-                  title="Quitar accesorio"
+                  title="Quitar"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -150,19 +212,19 @@ export const MannequinCanvas: React.FC<MannequinCanvasProps> = ({
             ) : (
               <button
                 onClick={() => onSelectCategory('Accessories')}
-                className="px-3 py-1.5 rounded-full border border-dashed border-neutral-300 dark:border-neutral-700 bg-white/60 dark:bg-neutral-900/60 hover:bg-white dark:hover:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-[10px] font-medium flex items-center space-x-1.5 transition-all hover:scale-105 cursor-pointer shadow-2xs"
+                className="px-3.5 py-1.5 rounded-full border border-dashed border-neutral-300 dark:border-neutral-700 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xs hover:bg-white dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-[10px] font-medium flex items-center space-x-1.5 transition-all hover:scale-105 cursor-pointer shadow-xs"
               >
                 <Plus className="w-3 h-3 text-indigo-500" />
-                <span>+ Accesorio / Cabeza</span>
+                <span>+ Agregar Accesorio</span>
               </button>
             )}
           </div>
 
-          {/* Layer 2: Jacket / Outerwear & Top (Chest / Torso level) */}
-          <div className="w-full grid grid-cols-2 gap-2 max-w-[280px]">
+          {/* Layer 2: Outerwear & Top */}
+          <div className="w-full grid grid-cols-2 gap-2 max-w-[300px]">
             {/* Jacket Slot */}
             {selectedJacket ? (
-              <div className="relative group bg-white rounded-xl p-2 border border-neutral-200 dark:border-white/10 shadow-md transition-all hover:scale-105 flex flex-col items-center text-center">
+              <div className="relative group bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md rounded-xl p-2 border border-neutral-200 dark:border-white/10 shadow-lg transition-all hover:scale-105 flex flex-col items-center text-center">
                 <span className="text-[8px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-1">
                   Abrigo / Chaqueta
                 </span>
@@ -170,15 +232,15 @@ export const MannequinCanvas: React.FC<MannequinCanvasProps> = ({
                   src={selectedJacket.imageUrl}
                   alt={selectedJacket.title}
                   referrerPolicy="no-referrer"
-                  className="w-16 h-20 object-contain rounded-md"
+                  className="w-20 h-24 object-contain rounded-md bg-white p-1"
                 />
                 <p className="text-[10px] font-semibold truncate w-full mt-1 text-neutral-800 dark:text-neutral-200">
-                  {selectedJacket.brand || selectedJacket.title}
+                  {selectedJacket.title}
                 </p>
                 <button
                   onClick={() => onRemoveCategory('Jackets')}
                   className="absolute top-1 right-1 p-1 text-neutral-400 hover:text-rose-500 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
-                  title="Quitar chaqueta"
+                  title="Quitar"
                 >
                   <X className="w-3 h-3" />
                 </button>
@@ -186,16 +248,16 @@ export const MannequinCanvas: React.FC<MannequinCanvasProps> = ({
             ) : (
               <button
                 onClick={() => onSelectCategory('Jackets')}
-                className="h-28 rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-700 bg-white/60 dark:bg-neutral-900/60 hover:bg-white dark:hover:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-[10px] font-medium flex flex-col items-center justify-center space-y-1 transition-all hover:scale-105 cursor-pointer shadow-2xs"
+                className="h-28 rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-700 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xs hover:bg-white dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-[10px] font-medium flex flex-col items-center justify-center space-y-1 transition-all hover:scale-105 cursor-pointer shadow-xs"
               >
                 <Plus className="w-3.5 h-3.5 text-amber-500" />
-                <span>+ Abrigo</span>
+                <span>+ Chaqueta</span>
               </button>
             )}
 
             {/* Top Slot */}
             {selectedTop ? (
-              <div className="relative group bg-white rounded-xl p-2 border border-neutral-200 dark:border-white/10 shadow-md transition-all hover:scale-105 flex flex-col items-center text-center">
+              <div className="relative group bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md rounded-xl p-2 border border-neutral-200 dark:border-white/10 shadow-lg transition-all hover:scale-105 flex flex-col items-center text-center">
                 <span className="text-[8px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1">
                   Top / Camiseta
                 </span>
@@ -203,15 +265,15 @@ export const MannequinCanvas: React.FC<MannequinCanvasProps> = ({
                   src={selectedTop.imageUrl}
                   alt={selectedTop.title}
                   referrerPolicy="no-referrer"
-                  className="w-16 h-20 object-contain rounded-md"
+                  className="w-20 h-24 object-contain rounded-md bg-white p-1"
                 />
                 <p className="text-[10px] font-semibold truncate w-full mt-1 text-neutral-800 dark:text-neutral-200">
-                  {selectedTop.brand || selectedTop.title}
+                  {selectedTop.title}
                 </p>
                 <button
                   onClick={() => onRemoveCategory('Tops')}
                   className="absolute top-1 right-1 p-1 text-neutral-400 hover:text-rose-500 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
-                  title="Quitar top"
+                  title="Quitar"
                 >
                   <X className="w-3 h-3" />
                 </button>
@@ -219,7 +281,7 @@ export const MannequinCanvas: React.FC<MannequinCanvasProps> = ({
             ) : (
               <button
                 onClick={() => onSelectCategory('Tops')}
-                className="h-28 rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-700 bg-white/60 dark:bg-neutral-900/60 hover:bg-white dark:hover:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-[10px] font-medium flex flex-col items-center justify-center space-y-1 transition-all hover:scale-105 cursor-pointer shadow-2xs"
+                className="h-28 rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-700 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xs hover:bg-white dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-[10px] font-medium flex flex-col items-center justify-center space-y-1 transition-all hover:scale-105 cursor-pointer shadow-xs"
               >
                 <Plus className="w-3.5 h-3.5 text-emerald-500" />
                 <span>+ Top / Polera</span>
@@ -227,22 +289,22 @@ export const MannequinCanvas: React.FC<MannequinCanvasProps> = ({
             )}
           </div>
 
-          {/* Layer 3: Bottom (Waist / Pants level) */}
-          <div className="w-full flex justify-center max-w-[280px]">
+          {/* Layer 3: Bottom */}
+          <div className="w-full flex justify-center max-w-[300px]">
             {selectedBottom ? (
-              <div className="relative group w-full bg-white rounded-xl p-2.5 border border-neutral-200 dark:border-white/10 shadow-md transition-all hover:scale-105 flex items-center space-x-3">
+              <div className="relative group w-full bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md rounded-xl p-2.5 border border-neutral-200 dark:border-white/10 shadow-lg transition-all hover:scale-105 flex items-center space-x-3">
                 <img
                   src={selectedBottom.imageUrl}
                   alt={selectedBottom.title}
                   referrerPolicy="no-referrer"
-                  className="w-16 h-20 object-contain rounded-md bg-neutral-50 flex-shrink-0"
+                  className="w-16 h-20 object-contain rounded-md bg-white p-1 flex-shrink-0"
                 />
                 <div className="flex-1 min-w-0 text-left">
                   <span className="text-[9px] font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 block">
-                    Pantalón / Bottom
+                    Pantalón / Falda
                   </span>
                   <p className="text-xs font-semibold truncate text-neutral-800 dark:text-neutral-200 mt-0.5">
-                    {selectedBottom.brand || selectedBottom.title}
+                    {selectedBottom.title}
                   </p>
                   {selectedBottom.color && (
                     <span className="text-[10px] text-neutral-400 block mt-0.5 capitalize">
@@ -253,7 +315,7 @@ export const MannequinCanvas: React.FC<MannequinCanvasProps> = ({
                 <button
                   onClick={() => onRemoveCategory('Bottoms')}
                   className="p-1.5 text-neutral-400 hover:text-rose-500 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
-                  title="Quitar pantalón"
+                  title="Quitar"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -261,36 +323,36 @@ export const MannequinCanvas: React.FC<MannequinCanvasProps> = ({
             ) : (
               <button
                 onClick={() => onSelectCategory('Bottoms')}
-                className="w-full py-5 rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-700 bg-white/60 dark:bg-neutral-900/60 hover:bg-white dark:hover:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-[10px] font-medium flex items-center justify-center space-x-2 transition-all hover:scale-105 cursor-pointer shadow-2xs"
+                className="w-full py-5 rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-700 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xs hover:bg-white dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-[10px] font-medium flex items-center justify-center space-x-2 transition-all hover:scale-105 cursor-pointer shadow-xs"
               >
                 <Plus className="w-3.5 h-3.5 text-purple-500" />
-                <span>+ Pantalón / Falda / Bottom</span>
+                <span>+ Pantalón / Falda</span>
               </button>
             )}
           </div>
 
-          {/* Layer 4: Shoes (Feet level) */}
-          <div className="w-full flex justify-center max-w-[280px]">
+          {/* Layer 4: Shoes */}
+          <div className="w-full flex justify-center max-w-[300px]">
             {selectedShoes ? (
-              <div className="relative group w-full bg-white rounded-xl p-2 border border-neutral-200 dark:border-white/10 shadow-md transition-all hover:scale-105 flex items-center space-x-3">
+              <div className="relative group w-full bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md rounded-xl p-2 border border-neutral-200 dark:border-white/10 shadow-lg transition-all hover:scale-105 flex items-center space-x-3">
                 <img
                   src={selectedShoes.imageUrl}
                   alt={selectedShoes.title}
                   referrerPolicy="no-referrer"
-                  className="w-14 h-14 object-contain rounded-md bg-neutral-50 flex-shrink-0"
+                  className="w-14 h-14 object-contain rounded-md bg-white p-1 flex-shrink-0"
                 />
                 <div className="flex-1 min-w-0 text-left">
                   <span className="text-[9px] font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400 block">
-                    Calzado / Zapatos
+                    Calzado
                   </span>
                   <p className="text-xs font-semibold truncate text-neutral-800 dark:text-neutral-200">
-                    {selectedShoes.brand || selectedShoes.title}
+                    {selectedShoes.title}
                   </p>
                 </div>
                 <button
                   onClick={() => onRemoveCategory('Shoes')}
                   className="p-1.5 text-neutral-400 hover:text-rose-500 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
-                  title="Quitar zapatos"
+                  title="Quitar"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -298,24 +360,24 @@ export const MannequinCanvas: React.FC<MannequinCanvasProps> = ({
             ) : (
               <button
                 onClick={() => onSelectCategory('Shoes')}
-                className="w-full py-3 rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-700 bg-white/60 dark:bg-neutral-900/60 hover:bg-white dark:hover:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-[10px] font-medium flex items-center justify-center space-x-2 transition-all hover:scale-105 cursor-pointer shadow-2xs"
+                className="w-full py-3.5 rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-700 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xs hover:bg-white dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-[10px] font-medium flex items-center justify-center space-x-2 transition-all hover:scale-105 cursor-pointer shadow-xs"
               >
                 <Plus className="w-3.5 h-3.5 text-rose-500" />
-                <span>+ Calzado / Zapatillas</span>
+                <span>+ Calzado</span>
               </button>
             )}
           </div>
 
         </div>
 
-        {/* Mannequin Footer Status Indicator */}
+        {/* Mannequin Footer Status */}
         <div className="relative z-10 w-full pt-3 mt-2 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between text-[10px] text-neutral-500">
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1 font-medium">
             <Sparkles className="w-3 h-3 text-amber-500" />
-            <span>Vista Previa de Silueta</span>
+            <span>Maniquí Blanco de Prueba</span>
           </span>
           <span className="font-medium text-neutral-700 dark:text-neutral-300">
-            Toca cualquier zona para cambiar prenda
+            Presiona para cambiar prenda
           </span>
         </div>
 
@@ -323,3 +385,4 @@ export const MannequinCanvas: React.FC<MannequinCanvasProps> = ({
     </div>
   );
 };
+

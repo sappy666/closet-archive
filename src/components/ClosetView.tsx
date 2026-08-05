@@ -115,7 +115,7 @@ export const ClosetView: React.FC<ClosetViewProps> = ({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Buscar por prenda, color, marca..."
+            placeholder="Buscar por prenda, color, estilo..."
             className={`w-full pl-8 pr-4 py-1.5 text-xs rounded-full border transition-all focus:outline-none ${
               isDarkMode
                 ? 'bg-neutral-900 border-neutral-800 text-white placeholder-neutral-500 focus:border-white/30'
@@ -152,7 +152,7 @@ export const ClosetView: React.FC<ClosetViewProps> = ({
         <div className="flex items-center space-x-1.5 overflow-x-auto no-scrollbar py-1">
           <span className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wider flex items-center gap-1 flex-shrink-0 mr-1">
             <Sparkles className="w-3 h-3 text-amber-500" />
-            <span>Etiquetas IA:</span>
+            <span>Etiquetas Automáticas:</span>
           </span>
           {selectedTagFilter && (
             <button
@@ -232,13 +232,13 @@ export const ClosetView: React.FC<ClosetViewProps> = ({
                   </button>
                 </div>
 
-                {/* Brand & Title Label */}
+                {/* Title & Category Label */}
                 <div className="mt-2 px-1 max-w-full space-y-0.5">
-                  <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-800 dark:text-neutral-200 truncate group-hover:text-black dark:group-hover:text-white transition-colors">
-                    {item.brand || item.title}
+                  <p className="text-[11px] font-semibold tracking-tight text-neutral-800 dark:text-neutral-200 truncate group-hover:text-black dark:group-hover:text-white transition-colors">
+                    {item.title}
                   </p>
                   <p className="text-[10px] text-neutral-400 capitalize truncate">
-                    {item.title}
+                    {item.color || item.category}
                   </p>
 
                   {/* Smart Tags Badges (Etiquetas Inteligentes AI) */}
